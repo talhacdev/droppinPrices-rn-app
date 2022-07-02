@@ -1,22 +1,28 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import fonts from '../config/fonts';
 import colors from '../config/colors';
 
-function Button(props) {
+function AppButton(props) {
   return (
     <TouchableOpacity
       disabled={!props.onPress}
       onPress={props.onPress}
       style={{
         width: wp(80),
-        height: wp(15),
+        height: hp(8),
         borderRadius: wp(5),
+        marginBottom: hp(1),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.primary,
+        backgroundColor: props.backgroundColor
+          ? props.backgroundColor
+          : colors.primary,
       }}>
       <Text
         style={{
@@ -30,4 +36,4 @@ function Button(props) {
   );
 }
 
-export default Button;
+export default AppButton;

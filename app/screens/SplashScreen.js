@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react';
 import {Image, View, TouchableOpacity, StyleSheet} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import routes from '../navigation/routes';
 
@@ -9,9 +12,9 @@ import colors from '../config/colors';
 
 function SplashScreen(props) {
   useEffect(() => {
-    // setTimeout(() => {
-    //   props.navigation.navigate(routes.ON_BOARDING_ONE);
-    // }, 5000);
+    setTimeout(() => {
+      props.navigation.navigate(routes.ON_BOARDING_ONE);
+    }, 1000);
   }, []);
 
   const navigate = () => {
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: wp(50),
-    height: wp(50),
+    height: hp(25),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: wp(5),
@@ -44,7 +47,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     backgroundColor: colors.background,
   },
-  logo: {width: wp(45), height: wp(45), resizeMode: 'contain'},
+  logo: {
+    width: wp(45),
+    height: hp(25),
+    resizeMode: 'contain',
+  },
 });
 
 export default SplashScreen;

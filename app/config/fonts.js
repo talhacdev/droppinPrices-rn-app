@@ -3,4 +3,5 @@ export default {
   GilroyLight: 'Gilroy-Light',
   PoppinsRegular: 'Poppins-Regular',
   RobotoBold: 'Roboto-Bold',
+  RobotoRegular: 'Roboto-Regular',
 };

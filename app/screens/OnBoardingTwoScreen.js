@@ -1,6 +1,11 @@
 import React from 'react';
 import {View, Image, StyleSheet, Text} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+import routes from '../navigation/routes';
 
 import Button from '../components/Button';
 import images from '../config/images';
@@ -32,7 +37,10 @@ function OnBoardingTwoScreen(props) {
         </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Button title={'Next'} />
+        <Button
+          onPress={() => props.navigation.navigate(routes.REGISTER)}
+          title={'Next'}
+        />
       </View>
     </View>
   );
@@ -46,12 +54,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   headerContainer: {
-    width: wp(80),
-    paddingVertical: 30,
+    width: wp(70),
+    paddingVertical: 10,
+    justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp(10),
+    fontSize: wp(8),
     fontFamily: fonts.GilroyExtraBold,
+    color: colors.textColor,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -63,23 +73,26 @@ const styles = StyleSheet.create({
     color: colors.secondary,
   },
   imageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: wp(80),
-    height: wp(70),
     paddingVertical: 5,
   },
-  image: {height: wp(75), resizeMode: 'contain'},
+  image: {
+    width: wp(70),
+    height: hp(30),
+    resizeMode: 'contain',
+  },
   footerContainer: {
-    width: wp(75),
-    paddingVertical: 20,
+    width: wp(70),
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   footerText: {
-    fontSize: wp(4.5),
+    fontSize: wp(4),
     fontFamily: fonts.PoppinsRegular,
+    color: colors.textColor,
   },
   buttonContainer: {
-    paddingVertical: 25,
+    paddingVertical: 15,
   },
 });
 
