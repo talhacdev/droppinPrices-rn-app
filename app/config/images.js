@@ -18,4 +18,5 @@ export default {
   plus: require('../assets/images/plus.png'),
   headphones: require('../assets/images/headphones.png'),
   perfume: require('../assets/images/perfume.png'),
+  heart: require('../assets/images/heart.png'),
 };

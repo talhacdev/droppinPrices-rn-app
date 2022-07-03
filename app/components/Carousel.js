@@ -83,7 +83,7 @@ function CarouselComponent(props) {
         autoplayInterval={3000}
         inactiveSlideOpacity={0.1}
         inactiveSlideScale={0.1}
-        layoutCardOffset={`9`}
+        layoutCardOffset={9}
         data={props.carouselItems}
         sliderWidth={wp(75)}
         itemWidth={wp(60)}

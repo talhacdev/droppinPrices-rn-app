@@ -18,7 +18,7 @@ function HomeScreen(props) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
           onPressBack={() => console.log('back')}
@@ -60,7 +60,9 @@ function HomeScreen(props) {
                   price={item.price}
                   originalPrice={item.originalPrice}
                   image={item.image}
+                  discount={item.discount}
                   onPressAdd={() => console.log('add pressed')}
+                  onPressLike={() => console.log('like pressed')}
                 />
               </View>
             )}
