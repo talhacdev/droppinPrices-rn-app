@@ -2,12 +2,12 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-import routes from '../navigation/routes';
-
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import HeaderText from '../components/HeaderText';
 import Footer from '../components/Footer';
+
+import routes from '../navigation/routes';
 
 import colors from '../config/colors';
 
@@ -22,7 +22,6 @@ function LoginScreen(props) {
         <View style={styles.middleContainer}>
           <TextInput placeholder={'Email'} />
           <TextInput placeholder={'Password'} />
-          <TextInput placeholder={'Confirm Password'} />
         </View>
 
         <View style={styles.buttonContainer}>

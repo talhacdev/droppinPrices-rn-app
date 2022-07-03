@@ -24,6 +24,7 @@ function AppTextInput(props) {
         placeholder={props.placeholder ? props.placeholder : 'Placeholder'}
         placeholderTextColor={colors.black}
         defaultValue={props.defaultValue}
+        secureTextEntry={props.secureTextEntry}
         style={{
           width: '90%',
           fontFamily: fonts.RobotoRegular,

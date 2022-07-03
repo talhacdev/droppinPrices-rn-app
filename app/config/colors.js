@@ -5,4 +5,5 @@ export default {
   buttonText: '#FFFFFF',
   textColor: '#000000',
   textInput: '#F3F3F3',
+  inactiveTintColor: '#E5E5E5',
 };

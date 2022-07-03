@@ -1,18 +1,14 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
-import routes from '../navigation/routes';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import HeaderText from '../components/HeaderText';
 import Footer from '../components/Footer';
 
-import fonts from '../config/fonts';
+import routes from '../navigation/routes';
+
 import colors from '../config/colors';
 
 function RegisterScreen(props) {
@@ -28,11 +24,16 @@ function RegisterScreen(props) {
         <View style={styles.middleContainer}>
           <TextInput
             placeholder={'Email'}
-            defaultValue={'noreply@droppinPrices.com'}
+            // defaultValue={'hello@droppinprices.com'}
           />
           <TextInput
-            placeholder={'Phone Number'}
-            defaultValue={'+923331049859'}
+            placeholder={'Password'}
+            secureTextEntry
+            // defaultValue={'123456'}
+          />
+          <TextInput
+            placeholder={'Confirm Password'}
+            secureTextEntry // defaultValue={'123456'}
           />
         </View>
 

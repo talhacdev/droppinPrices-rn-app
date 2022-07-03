@@ -5,9 +5,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import routes from '../navigation/routes';
-
 import Button from '../components/Button';
+
+import routes from '../navigation/routes';
 
 import images from '../config/images';
 import fonts from '../config/fonts';

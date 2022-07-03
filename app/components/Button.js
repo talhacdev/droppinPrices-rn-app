@@ -14,9 +14,9 @@ function AppButton(props) {
       disabled={!props.onPress}
       onPress={props.onPress}
       style={{
-        width: wp(80),
-        height: hp(8),
-        borderRadius: wp(5),
+        width: props.width ? props.width : wp(80),
+        height: props.height ? props.height : hp(8),
+        borderRadius: props.borderRadius ? props.borderRadius : wp(5),
         marginBottom: hp(1),
         justifyContent: 'center',
         alignItems: 'center',
@@ -26,7 +26,7 @@ function AppButton(props) {
       }}>
       <Text
         style={{
-          fontSize: wp(4),
+          fontSize: props.fontSize ? props.fontSize : wp(4),
           fontFamily: fonts.RobotoBold,
           color: colors.buttonText,
         }}>

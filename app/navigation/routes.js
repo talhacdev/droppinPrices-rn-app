@@ -4,4 +4,9 @@ export default Object.freeze({
   ON_BOARDING_TWO: 'OnBoardingTwo',
   REGISTER: 'Register',
   LOGIN: 'Login',
+  HOME: 'Home',
+  SEARCH: 'Search',
+  CART: 'Cart',
+  ANALYTICS: 'Analytics',
+  LIKED: 'Liked',
 });
