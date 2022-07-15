@@ -31,26 +31,31 @@ function ProductCardHeader(props) {
             {props.textRight}
           </Text>
         </Text>
-        <TouchableOpacity onPress={props.onPress}>
-          <Text
-            style={{
-              fontFamily: fonts.PoppinsRegular,
-              fontSize: wp(3),
-              textDecorationLine: 'underline',
-              color: colors.textColor,
-            }}>
-            View all
-          </Text>
-        </TouchableOpacity>
+        {!props.noViewAll && (
+          <TouchableOpacity onPress={props.onPress}>
+            <Text
+              style={{
+                fontFamily: fonts.PoppinsRegular,
+                fontSize: wp(3),
+                textDecorationLine: 'underline',
+                color: colors.textColor,
+                fontWeight: '700',
+              }}>
+              VIEW ALL
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <Text
-        style={{
-          fontFamily: fonts.RobotoRegular,
-          fontSize: wp(3),
-          color: colors.textColor,
-        }}>
-        {props.subText}
-      </Text>
+      {props.subText && (
+        <Text
+          style={{
+            fontFamily: fonts.RobotoRegular,
+            fontSize: wp(3),
+            color: colors.textColor,
+          }}>
+          {props.subText}
+        </Text>
+      )}
     </View>
   );
 }

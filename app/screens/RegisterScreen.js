@@ -1,6 +1,7 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, KeyboardAvoidingView, Keyboard} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import auth from '@react-native-firebase/auth';
 
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
@@ -12,49 +13,106 @@ import routes from '../navigation/routes';
 import colors from '../config/colors';
 
 function RegisterScreen(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  const onPressSkipToHome = () => {
+    auth()
+      .signInAnonymously()
+      .then(() => {
+        console.log('User signed in anonymously');
+      })
+      .catch(error => {
+        alert(error);
+      });
+  };
+
+  const onPressSignUp = () => {
+    if (email || password || confirmPassword) {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('User account created & signed in!');
+        })
+        .catch(error => {
+          alert(error);
+        });
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior={'padding'} style={styles.container}>
       <View style={styles.container}>
         <HeaderText
           headerText={'Sign up & get started'}
-          subHeaderText={
-            'We’ll text you a verification code. Message and data rates may apply.'
-          }
+          // subHeaderText={
+          //   'We’ll text you a verification code. Message and data rates may apply.'
+          // }
+          subHeaderText={'Let’s get acquainted.'}
         />
         <View style={styles.middleContainer}>
           <TextInput
+            onChangeText={text => setEmail(text)}
+            defaultValue={email}
             placeholder={'Email'}
-            // defaultValue={'hello@droppinprices.com'}
           />
           <TextInput
-            placeholder={'Password'}
             secureTextEntry
-            // defaultValue={'123456'}
+            onChangeText={text => setPassword(text)}
+            defaultValue={password}
+            placeholder={'Password'}
           />
           <TextInput
+            secureTextEntry
+            onChangeText={text => setConfirmPassword(text)}
+            defaultValue={confirmPassword}
             placeholder={'Confirm Password'}
-            secureTextEntry // defaultValue={'123456'}
           />
         </View>
 
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => props.navigation.navigate(routes.LOGIN)}
+            disabled={!email || !password || !confirmPassword}
+            onPress={() => onPressSignUp()}
             title={'Sign up'}
           />
           <Button
-            onPress={() => props.navigation.navigate(routes.ON_BOARDING_ONE)}
+            onPress={() => onPressSkipToHome()}
             backgroundColor={colors.secondary}
             title={'Skip to Home'}
           />
         </View>
       </View>
-      <Footer
-        leftText={'Already have an accout? '}
-        hyperlinkText={'Sign in'}
-        onPress={() => props.navigation.navigate(routes.LOGIN)}
-      />
-    </View>
+      {!isKeyboardVisible && (
+        <Footer
+          leftText={'Already have an accout? '}
+          hyperlinkText={'Sign in'}
+          onPress={() => props.navigation.navigate(routes.LOGIN)}
+        />
+      )}
+    </KeyboardAvoidingView>
   );
 }
 

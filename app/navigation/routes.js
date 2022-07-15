@@ -9,4 +9,7 @@ export default Object.freeze({
   CART: 'Cart',
   ANALYTICS: 'Analytics',
   LIKED: 'Liked',
+  PRODUCTS: 'Products',
+  BIDS: 'Bids',
+  PRODUCT_DETAIL: 'ProductDetail',
 });

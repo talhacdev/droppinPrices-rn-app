@@ -50,6 +50,7 @@ function CarouselComponent(props) {
                 color: colors.secondary,
                 fontFamily: fonts.PoppinsRegular,
                 fontSize: wp(3),
+                fontWeight: '700',
               }}>
               {item.time}
             </Text>

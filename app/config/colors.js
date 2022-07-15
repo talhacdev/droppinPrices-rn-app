@@ -10,4 +10,7 @@ export default {
   searchIcon: '#4D4D4D',
   selected: '#D5EEF9',
   unSelected: '#F6F6F6',
+  quickBid: '#2081E2',
+  error: '#FF0000A6',
+  checkout: '#F5F5F6',
 };

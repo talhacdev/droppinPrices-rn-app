@@ -5,8 +5,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import routes from '../navigation/routes';
-
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import TextInput from '../components/TextInput';
@@ -18,7 +16,7 @@ import colors from '../config/colors';
 
 import {products as PRODUCTS, categories as CATEGORIES} from '../config/JSON';
 
-function SearchScreen(props) {
+function ProductsScreen(props) {
   const [selectedCategory, setSelectedCategory] = useState(0);
 
   const [low, setLow] = useState(20);
@@ -32,10 +30,10 @@ function SearchScreen(props) {
   }, []);
 
   return (
-    <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
-          onPressBack={() => props.navigation.navigate(routes.HOME)}
+          onPressBack={() => props.navigation.goBack()}
           onPressDrawer={() => console.log('toggle drawer')}
         />
 
@@ -59,25 +57,23 @@ function SearchScreen(props) {
           />
         </View>
 
-        {false && (
-          <Slider
-            low={low}
-            high={high}
-            min={min}
-            max={max}
-            handleValueChange={handleValueChange}
-          />
-        )}
+        <Slider
+          low={low}
+          high={high}
+          min={min}
+          max={max}
+          handleValueChange={handleValueChange}
+        />
 
-        {false && (
-          <View style={{width: wp(90), paddingBottom: hp(2)}}>
-            <FlatList
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              data={PRODUCTS}
-              keyExtractor={PRODUCTS => PRODUCTS.id}
-              renderItem={({item}) => (
-                <View style={{paddingRight: wp(2), paddingBottom: wp(2)}}>
+        <View style={{width: wp(90), paddingBottom: hp(2)}}>
+          <FlatList
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            data={PRODUCTS}
+            keyExtractor={PRODUCTS => PRODUCTS.id}
+            renderItem={({item}) => (
+              <View style={{paddingRight: wp(2), paddingBottom: wp(2)}}>
+                {!item.auctionId && (
                   <ProductCard
                     onPress={() => console.log('card pressed')}
                     productName={item.productName}
@@ -85,35 +81,32 @@ function SearchScreen(props) {
                     originalPrice={item.originalPrice}
                     image={item.image}
                     discount={item.discount}
+                    liked={item.liked}
+                    minimumPrice={item.minimumPrice}
+                    auctionId={item.auctionId}
                     onPressAdd={() => console.log('add pressed')}
                     onPressLike={() => console.log('like pressed')}
                   />
-                </View>
-              )}
-            />
-          </View>
-        )}
-
-        {false && (
-          <Button
-            backgroundColor={colors.secondary}
-            width={wp(35)}
-            fontSize={wp(3)}
-            height={hp(6)}
-            title={'BROWSE MORE'}
-            onPress={() => console.log('button pressed')}
+                )}
+              </View>
+            )}
           />
-        )}
+        </View>
+
+        <Button
+          backgroundColor={colors.secondary}
+          width={wp(35)}
+          fontSize={wp(3)}
+          height={hp(6)}
+          title={'BROWSE MORE'}
+          onPress={() => console.log('button pressed')}
+        />
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -123,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default ProductsScreen;

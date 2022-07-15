@@ -11,12 +11,14 @@ import colors from '../config/colors';
 function HeaderText(props) {
   return (
     <View
-      style={{
-        width: wp(70),
-        paddingVertical: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      style={
+        props.containerStyle || {
+          width: props.width || wp(70),
+          paddingVertical: props.paddingVertical || 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }
+      }>
       <Text
         style={{
           fontSize: wp(7),
@@ -24,16 +26,29 @@ function HeaderText(props) {
           color: colors.textColor,
         }}>
         {props.headerText}
+        {props.likedScreen && (
+          <Text
+            style={{
+              fontSize: wp(7),
+              fontFamily: fonts.GilroyExtraBold,
+              color: colors.secondary,
+            }}>
+            {props.likedScreenText}
+          </Text>
+        )}
       </Text>
-      <Text
-        style={{
-          fontFamily: fonts.RobotoRegular,
-          color: colors.textColor,
-          opacity: 0.5,
-          margin: hp(1),
-        }}>
-        {props.subHeaderText}
-      </Text>
+
+      {props.subHeaderText && (
+        <Text
+          style={{
+            fontFamily: fonts.RobotoRegular,
+            color: colors.textColor,
+            opacity: 0.5,
+            margin: hp(1),
+          }}>
+          {props.subHeaderText}
+        </Text>
+      )}
     </View>
   );
 }

@@ -11,7 +11,7 @@ import colors from '../config/colors';
 function AppButton(props) {
   return (
     <TouchableOpacity
-      disabled={!props.onPress}
+      disabled={props.disabled}
       onPress={props.onPress}
       style={{
         width: props.width ? props.width : wp(80),

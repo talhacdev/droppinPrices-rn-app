@@ -19,4 +19,10 @@ export default {
   headphones: require('../assets/images/headphones.png'),
   perfume: require('../assets/images/perfume.png'),
   heart: require('../assets/images/heart.png'),
+  heartRed: require('../assets/images/heartRed.png'),
+  close: require('../assets/images/close.png'),
+  twitter: require('../assets/images/twitter.png'),
+  facebook: require('../assets/images/facebook.png'),
+  instagram: require('../assets/images/instagram.png'),
+  youtube: require('../assets/images/youtube.png'),
 };

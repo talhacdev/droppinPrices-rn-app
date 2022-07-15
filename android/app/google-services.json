@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "688285763354",
+    "project_id": "droppinprices",
+    "storage_bucket": "droppinprices.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688285763354:android:e4daf6b853b73f6821cea3",
+        "android_client_info": {
+          "package_name": "com.droppinprices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688285763354-8musph91uijagl4tmmnjs450vvb1q9um.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_HBJoyEvq-K9Ci1alYeZeaMXgQpvtNAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688285763354-8musph91uijagl4tmmnjs450vvb1q9um.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

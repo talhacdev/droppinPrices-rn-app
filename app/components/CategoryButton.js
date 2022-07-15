@@ -25,6 +25,7 @@ function CategoryCard(props) {
           fontFamily: fonts.RobotoRegular,
           fontWeight: 'bold',
           color: colors.textColor,
+          opacity: props.selected ? 1 : 0.5,
           fontSize: wp(3),
         }}>
         {props.item.categoryName}
