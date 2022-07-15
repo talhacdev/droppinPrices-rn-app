@@ -36,9 +36,8 @@ import ProductCardHeader from '../components/ProductCardHeader';
 import images from '../config/images';
 
 function ProductDetailScreen(props) {
-  const [selectedCategory, setSelectedCategory] = useState(0);
-
   const item = props.route.params.item;
+  const selectedCategory = item.category;
 
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
@@ -63,6 +62,7 @@ function ProductDetailScreen(props) {
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
                 <CategoryButton
+                  disabled
                   onPress={() => setSelectedCategory(item.id)}
                   selected={selectedCategory == item.id}
                   item={item}
@@ -85,7 +85,7 @@ function ProductDetailScreen(props) {
                 height: hp(50),
                 resizeMode: 'contain',
               }}
-              source={item.image}
+              source={{uri: item.image}}
             />
           </View>
           <View style={{flexDirection: 'row'}}>
@@ -100,7 +100,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={item.image}
+                source={{uri: item.image}}
               />
             </View>
             <View style={{borderRadius: wp(8), marginHorizontal: wp(2)}}>
@@ -110,7 +110,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={item.image}
+                source={{uri: item.image}}
               />
             </View>
             <View style={{borderRadius: wp(8), marginHorizontal: wp(2)}}>
@@ -120,7 +120,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={item.image}
+                source={{uri: item.image}}
               />
             </View>
           </View>
@@ -132,8 +132,6 @@ function ProductDetailScreen(props) {
             paddingVertical: hp(4),
             width: wp(90),
             backgroundColor: colors.checkout,
-            justifyContent: 'center',
-            alignItems: 'center',
             borderRadius: wp(4),
           }}>
           <View
@@ -151,7 +149,13 @@ function ProductDetailScreen(props) {
           </View>
 
           {item.auctionId && (
-            <View style={{borderRadius: wp(2), marginBottom: hp(2)}}>
+            <View
+              style={{
+                borderRadius: wp(2),
+                marginBottom: hp(2),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -237,7 +241,7 @@ function ProductDetailScreen(props) {
               </View>
             </View>
           )}
-          <View style={styles.bottomButton}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Button
               backgroundColor={colors.primary}
               fontSize={wp(3.5)}

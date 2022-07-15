@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, FlatList, ScrollView} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -15,10 +15,22 @@ import Carousel from '../components/Carousel';
 
 import colors from '../config/colors';
 
-import {products as PRODUCTS} from '../config/JSON';
+import {products as JSONproducts} from '../config/JSON';
 
 function HomeScreen(props) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [products, setProducts] = useState(0);
+
+  useEffect(() => {
+    setProducts(JSONproducts);
+  });
+
+  const onPressLike = item => {
+    let productsArray = products;
+    let index = productsArray.indexOf(item);
+    productsArray[index].liked = !item.liked;
+    setProducts(productsArray);
+  };
 
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
@@ -40,7 +52,7 @@ function HomeScreen(props) {
         />
 
         <Carousel
-          carouselItems={PRODUCTS}
+          carouselItems={products}
           activeIndex={activeIndex}
           onSnapToItem={index => setActiveIndex(index)}
           onPress={() => console.log('carousel button pressed')}
@@ -57,8 +69,8 @@ function HomeScreen(props) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={PRODUCTS}
-            keyExtractor={PRODUCTS => PRODUCTS.id}
+            data={products}
+            keyExtractor={products => products.id}
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
                 {!item.auctionId && (
@@ -76,7 +88,7 @@ function HomeScreen(props) {
                     auctionId={item.auctionId}
                     description={item.description}
                     onPressAdd={() => console.log('add pressed')}
-                    onPressLike={() => console.log('like pressed')}
+                    onPressLike={() => onPressLike(item)}
                   />
                 )}
               </View>

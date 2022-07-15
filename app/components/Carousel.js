@@ -28,7 +28,7 @@ function CarouselComponent(props) {
               borderRadius: wp(2),
               resizeMode: 'cover',
             }}
-            source={item.image}
+            source={{uri: item.image}}
           />
         </View>
         {props.activeIndex == item.id && (

@@ -11,6 +11,7 @@ import colors from '../config/colors';
 function CategoryCard(props) {
   return (
     <TouchableOpacity
+      disabled={props.disabled}
       onPress={props.onPress}
       style={{
         backgroundColor: props.selected ? colors.selected : colors.unSelected,

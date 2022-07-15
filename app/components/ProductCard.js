@@ -67,7 +67,9 @@ function ProductCard(props) {
               borderTopLeftRadius: wp(2),
               borderTopRightRadius: wp(2),
             }}
-            source={props.image}
+            source={{
+              uri: props.image,
+            }}
           />
           <View
             style={{
@@ -172,7 +174,7 @@ function ProductCard(props) {
               borderTopLeftRadius: wp(2),
               borderTopRightRadius: wp(2),
             }}
-            source={props.image}
+            source={{uri: props.image}}
           />
 
           <View

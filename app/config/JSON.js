@@ -1,4 +1,5 @@
 import images from './images';
+import moment from 'moment';
 
 export const products = [
   {
@@ -10,9 +11,11 @@ export const products = [
     price: 700,
     minimumPrice: 9.9,
     originalPrice: 1000,
-    image: images.coffee,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
-    category: 'Electronic',
+    category: '0',
+    timestamp: moment(),
     description:
       "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -25,9 +28,11 @@ export const products = [
     price: 500,
     minimumPrice: 10.9,
     originalPrice: 7000,
-    image: images.perfume,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Tech',
+    timestamp: moment(),
     description:
       "Tea Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -40,9 +45,11 @@ export const products = [
     price: 300,
     minimumPrice: 11.9,
     originalPrice: 500,
-    image: images.headphones,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Sports',
+    timestamp: moment(),
     description:
       "Juice Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -55,9 +62,11 @@ export const products = [
     price: 150,
     minimumPrice: 12.9,
     originalPrice: 300,
-    image: images.coffee,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Food',
+    timestamp: moment(),
     description:
       "Biscuit Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -70,9 +79,11 @@ export const products = [
     price: 75,
     minimumPrice: 13.9,
     originalPrice: 150,
-    image: images.perfume,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Electronic',
+    timestamp: moment(),
     description:
       "Slanty Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -85,9 +96,11 @@ export const products = [
     price: 35,
     minimumPrice: 14.9,
     originalPrice: 75,
-    image: images.headphones,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Tech',
+    timestamp: moment(),
     description:
       "Chewing Gum Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -100,8 +113,10 @@ export const products = [
     price: 700,
     minimumPrice: 9.9,
     originalPrice: 1000,
-    image: images.coffee,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
+    timestamp: moment(),
     description:
       "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -114,9 +129,11 @@ export const products = [
     price: 500,
     minimumPrice: 10.9,
     originalPrice: 7000,
-    image: images.perfume,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Food',
+    timestamp: moment(),
     description:
       "Tea Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -129,9 +146,11 @@ export const products = [
     price: 300,
     minimumPrice: 11.9,
     originalPrice: 500,
-    image: images.headphones,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Electronic',
+    timestamp: moment(),
     description:
       "Juice Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -144,9 +163,11 @@ export const products = [
     price: 150,
     minimumPrice: 12.9,
     originalPrice: 300,
-    image: images.coffee,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Tech',
+    timestamp: moment(),
     description:
       "Biscuit Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -159,9 +180,11 @@ export const products = [
     price: 75,
     minimumPrice: 13.9,
     originalPrice: 150,
-    image: images.perfume,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Sports',
+    timestamp: moment(),
     description:
       "Slanty Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },
@@ -174,9 +197,11 @@ export const products = [
     price: 35,
     minimumPrice: 14.9,
     originalPrice: 75,
-    image: images.headphones,
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
     time: '2d 14h 5m 11s',
     category: 'Food',
+    timestamp: moment(),
     description:
       "Chewing Gum Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
   },

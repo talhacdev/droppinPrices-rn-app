@@ -15,7 +15,7 @@ function CartCard(props) {
     <View style={styles.container}>
       <View style={styles.leftContainer}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={images.coffee} />
+          <Image style={styles.image} source={{uri: props.image}} />
         </View>
         <View style={styles.leftTextContainer}>
           <Text
