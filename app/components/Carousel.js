@@ -5,6 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Carousel from 'react-native-snap-carousel';
+import moment from 'moment';
 
 import Button from './Button';
 
@@ -52,7 +53,7 @@ function CarouselComponent(props) {
                 fontSize: wp(3),
                 fontWeight: '700',
               }}>
-              {item.time}
+              {calculateCountdown(item)}
             </Text>
             <Button
               width={wp(25)}
@@ -66,6 +67,31 @@ function CarouselComponent(props) {
         )}
       </View>
     );
+  };
+
+  const calculateCountdown = item => {
+    let now = moment(new Date());
+    let timestamp = item.timestamp;
+    let duration = moment.duration(now.diff(timestamp));
+    let seconds = duration.asSeconds();
+    let secondsLeft = 604800 - seconds;
+
+    var d = Math.floor(secondsLeft / (3600 * 24));
+    var h = Math.floor((secondsLeft % (3600 * 24)) / 3600);
+    var m = Math.floor((secondsLeft % 3600) / 60);
+    var s = Math.floor(secondsLeft % 60);
+
+    // var dDisplay = d > 0 ? d + (d == 1 ? ' day, ' : ' days, ') : '';
+    // var hDisplay = h > 0 ? h + (h == 1 ? ' hour, ' : ' hours, ') : '';
+    // var mDisplay = m > 0 ? m + (m == 1 ? ' minute, ' : ' minutes, ') : '';
+    // var sDisplay = s > 0 ? s + (s == 1 ? ' second' : ' seconds') : '';
+
+    var dDisplay = d > 0 ? d + (d == 1 ? 'd, ' : 'd ') : '';
+    var hDisplay = h > 0 ? h + (h == 1 ? 'h ' : 'h ') : '';
+    var mDisplay = m > 0 ? m + (m == 1 ? 'm ' : 'm ') : '';
+    var sDisplay = s > 0 ? s + (s == 1 ? 's' : 's') : '';
+
+    return dDisplay + hDisplay + mDisplay + sDisplay;
   };
 
   return (

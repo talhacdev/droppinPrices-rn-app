@@ -1,23 +1,20 @@
-import images from './images';
 import moment from 'moment';
 
 export const products = [
   {
     id: 0,
-    discount: 30,
     liked: false,
     productName: 'Coffee',
-    auctionId: null,
     price: 700,
-    minimumPrice: 9.9,
+    auctionId: null,
     originalPrice: 1000,
     image:
       'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-    time: '2d 14h 5m 11s',
-    category: '0',
-    timestamp: moment(),
     description:
       "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+    minimumPrice: 9.9,
+    category: '0',
+    timestamp: moment(),
   },
   {
     id: 1,

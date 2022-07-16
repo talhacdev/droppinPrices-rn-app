@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -35,12 +35,70 @@ import HeaderText from '../components/HeaderText';
 import ProductCardHeader from '../components/ProductCardHeader';
 import images from '../config/images';
 
+import {connect} from 'react-redux';
+import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
+
 function ProductDetailScreen(props) {
-  const item = props.route.params.item;
-  const selectedCategory = item.category;
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [product, setProduct] = useState({});
+  const [products, setProducts] = useState({});
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    const item = props.route.params.item;
+    let reduxProducts = props.productsValue;
+    let tempProduct = reduxProducts.filter(i => i.id === item.id);
+    console.log('tempProduct: ', tempProduct);
+    setProduct(tempProduct[0]);
+    setProducts(reduxProducts);
+  }, [props.productsValue]);
+
+  const onPressButton = item => {
+    if (item.auctionId) {
+      // place bid
+    } else {
+      onPressAddToCart(item);
+    }
+  };
+
+  const onPressProductCard = item => {
+    props.navigation.navigate(routes.PRODUCT_DETAIL, {item}),
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+  };
+
+  const onPressLike = item => {
+    let tempArray = products;
+    let index = tempArray.indexOf(item);
+    tempArray[index].liked = !item.liked;
+    props.updateProducts([...products]);
+  };
+
+  const onPressAddToCart = item => {
+    let reduxCart = props.cartValue;
+
+    let alreadyAdded = reduxCart.filter(i => i.id == item.id);
+
+    if (alreadyAdded.length >= 1) {
+      alert('Product already added');
+    } else {
+      reduxCart.push(item);
+      props.updateCart([...reduxCart]);
+    }
+  };
+
+  const calculateDiscount = item => {
+    return 100 - Math.round((item.price / item.originalPrice) * 100);
+  };
 
   return (
-    <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      ref={scrollRef}
+      style={styles.screen}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
           onPressBack={() => props.navigation.navigate(routes.HOME)}
@@ -49,7 +107,7 @@ function ProductDetailScreen(props) {
 
         <ProductCardHeader
           onPress={() => props.navigation.navigate(routes.PRODUCTS)}
-          textLeft={'Product Listing View'}
+          textLeft={'Product Detail'}
           noViewAll
         />
 
@@ -63,8 +121,7 @@ function ProductDetailScreen(props) {
               <View style={{paddingRight: wp(2)}}>
                 <CategoryButton
                   disabled
-                  onPress={() => setSelectedCategory(item.id)}
-                  selected={selectedCategory == item.id}
+                  selected={product.id == item.id}
                   item={item}
                 />
               </View>
@@ -85,7 +142,7 @@ function ProductDetailScreen(props) {
                 height: hp(50),
                 resizeMode: 'contain',
               }}
-              source={{uri: item.image}}
+              source={{uri: product.image}}
             />
           </View>
           <View style={{flexDirection: 'row'}}>
@@ -100,7 +157,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={{uri: item.image}}
+                source={{uri: product.image}}
               />
             </View>
             <View style={{borderRadius: wp(8), marginHorizontal: wp(2)}}>
@@ -110,7 +167,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={{uri: item.image}}
+                source={{uri: product.image}}
               />
             </View>
             <View style={{borderRadius: wp(8), marginHorizontal: wp(2)}}>
@@ -120,7 +177,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={{uri: item.image}}
+                source={{uri: product.image}}
               />
             </View>
           </View>
@@ -144,11 +201,11 @@ function ProductDetailScreen(props) {
                 fontSize: wp(3.5),
                 color: colors.textColor,
               }}>
-              {item.productName}
+              {product.productName}
             </Text>
           </View>
 
-          {item.auctionId && (
+          {product.auctionId && (
             <View
               style={{
                 borderRadius: wp(2),
@@ -243,15 +300,15 @@ function ProductDetailScreen(props) {
           )}
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Button
+              onPress={() => onPressButton(product)}
               backgroundColor={colors.primary}
               fontSize={wp(3.5)}
               height={hp(8)}
               borderRadius={wp(2)}
-              title={item.auctionId ? 'QUICK BID $900.00' : 'Add to Cart'}
-              onPress={() => console.log('button pressed')}
+              title={product.auctionId ? 'QUICK BID $900.00' : 'Add to Cart'}
             />
           </View>
-          {item.auctionId && (
+          {product.auctionId && (
             <View style={styles.center}>
               <TextInput bid borderRadius={wp(2)} promoCode placeholder={' '} />
             </View>
@@ -323,11 +380,11 @@ function ProductDetailScreen(props) {
                 fontSize: wp(3.5),
                 color: colors.textColor,
               }}>
-              {item.description}
+              {product.description}
             </Text>
           </View>
         </View>
-        {item.auctionId && (
+        {product.auctionId && (
           <DataTable style={{width: wp(90), paddingBottom: hp(4)}}>
             <View>
               <Text
@@ -386,25 +443,23 @@ function ProductDetailScreen(props) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={PRODUCTS}
-            keyExtractor={PRODUCTS => PRODUCTS.id}
+            data={products}
+            keyExtractor={products => products.id}
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
                 <ProductCard
-                  onPress={() =>
-                    props.navigation.navigate(routes.PRODUCT_DETAIL, {item})
-                  }
+                  onPress={() => onPressProductCard(item)}
                   productName={item.productName}
                   price={item.price}
                   originalPrice={item.originalPrice}
                   image={item.image}
-                  discount={item.discount}
+                  discount={calculateDiscount(item)}
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}
                   auctionId={item.auctionId}
                   description={item.description}
                   onPressAdd={() => console.log('add pressed')}
-                  onPressLike={() => console.log('like pressed')}
+                  onPressLike={() => onPressLike(item)}
                 />
               </View>
             )}
@@ -444,4 +499,21 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductDetailScreen;
+function mapStateToProps(state) {
+  return {
+    productsValue: state.auth.products,
+    cartValue: state.auth.cart,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateProducts: payload => dispatch(UpdateProducts(payload)),
+    updateCart: payload => dispatch(UpdateCart(payload)),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ProductDetailScreen);

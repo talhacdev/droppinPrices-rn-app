@@ -5,6 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import auth from '@react-native-firebase/auth';
+import moment from 'moment';
 
 import routes from '../navigation/routes';
 
@@ -15,21 +16,76 @@ import Carousel from '../components/Carousel';
 
 import colors from '../config/colors';
 
-import {products as JSONproducts} from '../config/JSON';
+import {connect} from 'react-redux';
+import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 
 function HomeScreen(props) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [products, setProducts] = useState(0);
+  const [productsToBuy, setProductsToBuy] = useState([]);
+  const [productsToBid, setProductsToBid] = useState([]);
 
   useEffect(() => {
-    setProducts(JSONproducts);
-  });
+    const interval = setInterval(() => {
+      turnToAuction();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    let reduxProducts = props.productsValue;
+
+    let tempProductsToBuy = reduxProducts.filter(i => i.auctionId == null);
+    let tempProductsToBid = reduxProducts.filter(i => i.auctionId !== null);
+
+    setProductsToBuy(tempProductsToBuy);
+    setProductsToBid(tempProductsToBid);
+  }, [props.productsValue]);
+
+  const turnToAuction = () => {
+    let reduxProducts = props.productsValue;
+
+    for (let i = 0; i < reduxProducts.length; i++) {
+      if (reduxProducts[i].auctionId == null) {
+        var now = moment(new Date());
+        var timestamp = reduxProducts[i].timestamp;
+        var duration = moment.duration(now.diff(timestamp));
+        var hours = duration.asHours();
+        if (hours > 0.3) {
+          reduxProducts[i].auctionId = moment();
+          props.updateProducts([...reduxProducts]);
+        }
+      }
+    }
+  };
+
+  const calculateDiscount = item => {
+    return 100 - Math.round((item.price / item.originalPrice) * 100);
+  };
 
   const onPressLike = item => {
-    let productsArray = products;
-    let index = productsArray.indexOf(item);
-    productsArray[index].liked = !item.liked;
-    setProducts(productsArray);
+    let reduxProducts = props.productsValue;
+
+    let index = reduxProducts.indexOf(item);
+    reduxProducts[index].liked = !item.liked;
+
+    props.updateProducts([...reduxProducts]);
+  };
+
+  const onPressAddToCart = item => {
+    let reduxCart = props.cartValue;
+
+    let alreadyAdded = reduxCart.filter(i => i.id == item.id);
+
+    if (alreadyAdded.length >= 1) {
+      alert('Product already added');
+    } else {
+      reduxCart.push(item);
+      props.updateCart([...reduxCart]);
+    }
+  };
+
+  const onPressCard = item => {
+    props.navigation.navigate(routes.PRODUCT_DETAIL, {item});
   };
 
   return (
@@ -52,10 +108,10 @@ function HomeScreen(props) {
         />
 
         <Carousel
-          carouselItems={products}
+          carouselItems={productsToBid}
           activeIndex={activeIndex}
           onSnapToItem={index => setActiveIndex(index)}
-          onPress={() => console.log('carousel button pressed')}
+          onPress={() => onPressCard(item)}
         />
 
         <ProductCardHeader
@@ -69,28 +125,24 @@ function HomeScreen(props) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={products}
-            keyExtractor={products => products.id}
+            data={productsToBuy}
+            keyExtractor={productsToBuy => productsToBuy.id}
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
-                {!item.auctionId && (
-                  <ProductCard
-                    onPress={() =>
-                      props.navigation.navigate(routes.PRODUCT_DETAIL, {item})
-                    }
-                    productName={item.productName}
-                    price={item.price}
-                    originalPrice={item.originalPrice}
-                    image={item.image}
-                    discount={item.discount}
-                    liked={item.liked}
-                    minimumPrice={item.minimumPrice}
-                    auctionId={item.auctionId}
-                    description={item.description}
-                    onPressAdd={() => console.log('add pressed')}
-                    onPressLike={() => onPressLike(item)}
-                  />
-                )}
+                <ProductCard
+                  onPress={() => onPressCard(item)}
+                  productName={item.productName}
+                  price={item.price}
+                  originalPrice={item.originalPrice}
+                  image={item.image}
+                  discount={calculateDiscount(item)}
+                  liked={item.liked}
+                  minimumPrice={item.minimumPrice}
+                  auctionId={item.auctionId}
+                  description={item.description}
+                  onPressAdd={() => onPressAddToCart(item)}
+                  onPressLike={() => onPressLike(item)}
+                />
               </View>
             )}
           />
@@ -114,4 +166,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+function mapStateToProps(state) {
+  return {
+    productsValue: state.auth.products,
+    cartValue: state.auth.cart,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateProducts: payload => dispatch(UpdateProducts(payload)),
+    updateCart: payload => dispatch(UpdateCart(payload)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
