@@ -20,6 +20,7 @@ import {categories as CATEGORIES} from '../config/JSON';
 
 import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
+import ProductCardHeader from '../components/ProductCardHeader';
 
 function ProductsScreen(props) {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -33,7 +34,6 @@ function ProductsScreen(props) {
   const [max, setMax] = useState(100);
 
   const handleValueChange = useCallback((low, high) => {
-    setSelectedCategory(0);
     setLow(low);
     setHigh(high);
     let reduxProducts = props.productsValue;
@@ -49,7 +49,7 @@ function ProductsScreen(props) {
         if (discount > low && discount < high) {
           array.push(tempProductsToBuy[i]);
         }
-        setSearchedProductsToBuy(array);
+        setProductsToBuy(array);
       }
     }
   }, []);
@@ -109,6 +109,8 @@ function ProductsScreen(props) {
   };
 
   const onPressCategory = item => {
+    setLow(0);
+    setHigh(100);
     setSelectedCategory(item.id);
 
     if (item.id) {
@@ -121,7 +123,7 @@ function ProductsScreen(props) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
           onPressBack={() => props.navigation.goBack()}
@@ -135,7 +137,7 @@ function ProductsScreen(props) {
           onChangeText={text => submitHandler(text)}
         /> */}
 
-        <View style={{width: wp(90)}}>
+        {/* <View style={{width: wp(90)}}>
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -151,7 +153,7 @@ function ProductsScreen(props) {
               </View>
             )}
           />
-        </View>
+        </View> */}
 
         <Slider
           low={low}
@@ -165,8 +167,8 @@ function ProductsScreen(props) {
           <FlatList
             numColumns={2}
             showsVerticalScrollIndicator={false}
-            data={searchedProductsToBuy}
-            keyExtractor={searchedProductsToBuy => searchedProductsToBuy.id}
+            data={productsToBuy}
+            keyExtractor={productsToBuy => productsToBuy.id}
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2), paddingBottom: wp(2)}}>
                 <ProductCard
@@ -189,20 +191,23 @@ function ProductsScreen(props) {
           />
         </View>
 
-        <Button
-          backgroundColor={colors.secondary}
-          width={wp(35)}
-          fontSize={wp(3)}
-          height={hp(6)}
-          title={'BROWSE MORE'}
-          onPress={() => console.log('button pressed')}
-        />
+        {productsToBuy.length == 0 && (
+          <ProductCardHeader
+            textLeft={'no products to show'}
+            textRight={' try again'}
+            noViewAll
+          />
+        )}
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

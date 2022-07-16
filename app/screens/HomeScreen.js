@@ -89,6 +89,10 @@ function HomeScreen(props) {
     props.navigation.navigate(routes.PRODUCT_DETAIL, {item});
   };
 
+  const onPressCarousel = () => {
+    props.navigation.navigate(routes.BIDS);
+  };
+
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -112,7 +116,7 @@ function HomeScreen(props) {
           carouselItems={productsToBid}
           activeIndex={activeIndex}
           onSnapToItem={index => setActiveIndex(index)}
-          onPress={() => onPressCard(item)}
+          onPress={() => onPressCarousel()}
         />
 
         <ProductCardHeader

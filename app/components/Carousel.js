@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image} from 'react-native';
+import {TouchableOpacity, Text, View, Image} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,7 +15,8 @@ import colors from '../config/colors';
 function CarouselComponent(props) {
   const _renderItem = ({item, index}) => {
     return (
-      <View
+      <TouchableOpacity
+        onPress={props.onPress}
         style={{
           height: hp(30),
           justifyContent: 'flex-start',
@@ -41,7 +42,7 @@ function CarouselComponent(props) {
               justifyContent: 'center',
               alignItems: 'center',
               width: wp(30),
-              height: hp(10),
+              height: hp(5),
               borderRadius: wp(2),
               elevation: hp(1),
               zIndex: 9000,
@@ -55,17 +56,17 @@ function CarouselComponent(props) {
               }}>
               {calculateCountdown(item)}
             </Text>
-            <Button
+            {/* <Button
               width={wp(25)}
               fontSize={wp(2.5)}
               height={hp(4)}
               borderRadius={wp(2)}
               title={'Place a bid'}
               onPress={props.onPress}
-            />
+            /> */}
           </View>
         )}
-      </View>
+      </TouchableOpacity>
     );
   };
 

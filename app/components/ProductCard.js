@@ -4,6 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import moment from 'moment';
 
 import images from '../config/images';
 import fonts from '../config/fonts';
@@ -197,6 +198,7 @@ function ProductCard(props) {
                 style={{
                   fontFamily: fonts.RobotoBold,
                   color: colors.primary,
+                  width: wp(20),
                   fontSize: wp(3),
                 }}>
                 {props.productName}
@@ -207,6 +209,7 @@ function ProductCard(props) {
                   fontFamily: fonts.RobotoBold,
                   color: colors.secondary,
                   fontSize: wp(3),
+                  width: wp(19),
                 }}>
                 {'Auc#' + props.auctionId}
               </Text>
@@ -272,15 +275,17 @@ function ProductCard(props) {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
-              <Text
-                numberOfLines={1}
-                style={{
-                  fontFamily: fonts.RobotoBold,
-                  color: colors.quickBid,
-                  fontSize: wp(3),
-                }}>
-                {'QUICK BID '}
-              </Text>
+              <TouchableOpacity onPress={props.onPressQuickBid}>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    fontFamily: fonts.RobotoBold,
+                    color: colors.quickBid,
+                    fontSize: wp(3),
+                  }}>
+                  {'QUICK BID '}
+                </Text>
+              </TouchableOpacity>
               <Text
                 numberOfLines={1}
                 style={{
@@ -288,7 +293,7 @@ function ProductCard(props) {
                   color: colors.secondary,
                   fontSize: wp(3),
                 }}>
-                {'2h 14d 5m 11s'}
+                {props.time}
               </Text>
             </View>
           </View>

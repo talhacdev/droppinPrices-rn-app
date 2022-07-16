@@ -4,36 +4,50 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import moment from 'moment';
 
 import routes from '../navigation/routes';
 
 import Header from '../components/Header';
-import TextInput from '../components/TextInput';
-import CategoryButton from '../components/CategoryButton';
 import Slider from '../components/Slider';
 import Button from '../components/Button';
 import HeaderText from '../components/HeaderText';
 
 import colors from '../config/colors';
 
-import {products as PRODUCTS, categories as CATEGORIES} from '../config/JSON';
 import ProductCard from '../components/ProductCard';
 
 import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
+import ProductCardHeader from '../components/ProductCardHeader';
 
 function BidsScreen(props) {
-  const [selectedCategory, setSelectedCategory] = useState(0);
   const [productsToBid, setProductsToBid] = useState([]);
 
-  const [low, setLow] = useState(20);
-  const [high, setHigh] = useState(80);
+  const [low, setLow] = useState(0);
+  const [high, setHigh] = useState(100);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(100);
 
   const handleValueChange = useCallback((low, high) => {
     setLow(low);
     setHigh(high);
+    let reduxProducts = props.productsValue;
+    let tempProductsToBid = reduxProducts.filter(i => i.bid == true);
+
+    if (low > 0 || high < 100) {
+      console.log('enter');
+      let array = [];
+      for (let i = 0; i < tempProductsToBid.length; i++) {
+        console.log('enter for');
+        let item = tempProductsToBid[i];
+        let discount = calculateDiscount(item);
+        if (discount > low && discount < high) {
+          array.push(tempProductsToBid[i]);
+        }
+        setProductsToBid(array);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -57,25 +71,34 @@ function BidsScreen(props) {
     return 100 - Math.round((item.price / item.originalPrice) * 100);
   };
 
-  const onPressAddToCart = item => {
-    let reduxCart = props.cartValue;
-
-    let alreadyAdded = reduxCart.filter(i => i.id == item.id);
-
-    if (alreadyAdded.length >= 1) {
-      alert('Product already added');
-    } else {
-      reduxCart.push(item);
-      props.updateCart([...reduxCart]);
-    }
-  };
-
   const onPressCard = item => {
     props.navigation.navigate(routes.PRODUCT_DETAIL, {item});
   };
 
+  const calculateCountdown = item => {
+    let now = moment(new Date());
+    console.log('item timestamp: ', item);
+    let timestamp = item.timestamp;
+    let duration = moment.duration(now.diff(timestamp));
+    let seconds = duration.asSeconds();
+    let secondsLeft = 604800 - seconds;
+    var d = Math.floor(secondsLeft / (3600 * 24));
+    var h = Math.floor((secondsLeft % (3600 * 24)) / 3600);
+    var m = Math.floor((secondsLeft % 3600) / 60);
+    var s = Math.floor(secondsLeft % 60);
+    var dDisplay = d > 0 ? d + (d == 1 ? 'd, ' : 'd ') : '';
+    var hDisplay = h > 0 ? h + (h == 1 ? 'h ' : 'h ') : '';
+    var mDisplay = m > 0 ? m + (m == 1 ? 'm ' : 'm ') : '';
+    var sDisplay = s > 0 ? s + (s == 1 ? 's' : 's') : '';
+    return dDisplay + hDisplay + mDisplay + sDisplay;
+  };
+
+  const onPressQuickBid = item => {
+    alert('Not available yet');
+  };
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
           onPressBack={() => props.navigation.goBack()}
@@ -89,26 +112,6 @@ function BidsScreen(props) {
             paddingVertical: props.paddingVertical || 10,
           }}
         />
-
-        <TextInput search placeholder={'Search any product or keyword'} />
-
-        <View style={{width: wp(90)}}>
-          <FlatList
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={CATEGORIES}
-            keyExtractor={CATEGORIES => CATEGORIES.id}
-            renderItem={({item}) => (
-              <View style={{paddingRight: wp(2)}}>
-                <CategoryButton
-                  onPress={() => setSelectedCategory(item.id)}
-                  selected={selectedCategory == item.id}
-                  item={item}
-                />
-              </View>
-            )}
-          />
-        </View>
 
         <Slider
           low={low}
@@ -138,14 +141,16 @@ function BidsScreen(props) {
                   bid={item.bid}
                   auctionId={item.auctionId}
                   description={item.description}
-                  onPressAdd={() => onPressAddToCart(item)}
+                  time={calculateCountdown(item)}
                   onPressLike={() => onPressLike(item)}
+                  onPressQuickBid={() => onPressQuickBid(item)}
                 />
               </View>
             )}
           />
         </View>
 
+        {/* 
         <Button
           backgroundColor={colors.secondary}
           width={wp(35)}
@@ -153,13 +158,25 @@ function BidsScreen(props) {
           height={hp(6)}
           title={'BROWSE MORE'}
           onPress={() => console.log('button pressed')}
-        />
+        /> */}
+
+        {productsToBid.length == 0 && (
+          <ProductCardHeader
+            textLeft={'no products to show'}
+            textRight={' try again'}
+            noViewAll
+          />
+        )}
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
