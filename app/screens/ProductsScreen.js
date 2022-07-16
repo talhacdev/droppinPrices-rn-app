@@ -33,33 +33,24 @@ function ProductsScreen(props) {
   const [max, setMax] = useState(100);
 
   const handleValueChange = useCallback((low, high) => {
-    setSearchQuery('');
     setSelectedCategory(0);
     setLow(low);
     setHigh(high);
+    let reduxProducts = props.productsValue;
+    let tempProductsToBuy = reduxProducts.filter(i => i.bid == false);
+
     if (low > 0 || high < 100) {
       console.log('enter');
       let array = [];
-      for (let i = 0; i < searchedProductsToBuy.length; i++) {
+      for (let i = 0; i < tempProductsToBuy.length; i++) {
         console.log('enter for');
-        let item = searchedProductsToBuy[i];
+        let item = tempProductsToBuy[i];
         let discount = calculateDiscount(item);
         if (discount > low && discount < high) {
-          array.push(searchedProductsToBuy[i]);
+          array.push(tempProductsToBuy[i]);
         }
         setSearchedProductsToBuy(array);
       }
-      // setSearchedProductsToBuy(array);
-      // // alert('in the logic');
-      // let tempProducts = productsToBuy?.filter(
-      //   m => m?.discount >= low && m?.price <= high,
-      // );
-
-      // console.log('tempProducts: ', tempProducts);
-
-      // setSearchedProductsToBuy(tempProducts);
-      // } else {
-      //   setSearchedProductsToBuy(productsToBuy);
     }
   }, []);
 
@@ -118,7 +109,6 @@ function ProductsScreen(props) {
   };
 
   const onPressCategory = item => {
-    setSearchQuery('');
     setSelectedCategory(item.id);
 
     if (item.id) {
@@ -138,12 +128,12 @@ function ProductsScreen(props) {
           onPressDrawer={() => console.log('toggle drawer')}
         />
 
-        <TextInput
+        {/* <TextInput
           defaultValue={searchQuery}
           search
           placeholder={'Search any product or keyword'}
           onChangeText={text => submitHandler(text)}
-        />
+        /> */}
 
         <View style={{width: wp(90)}}>
           <FlatList
