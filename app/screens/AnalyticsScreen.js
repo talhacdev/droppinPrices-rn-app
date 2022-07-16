@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  FlatList,
   ScrollView,
 } from 'react-native';
 import {
@@ -12,6 +11,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {DataTable} from 'react-native-paper';
+import moment from 'moment';
 
 import Header from '../components/Header';
 import TextInput from '../components/TextInput';
@@ -20,10 +20,43 @@ import HeaderText from '../components/HeaderText';
 import fonts from '../config/fonts';
 import colors from '../config/colors';
 
-import {analytics as ANALYTICS} from '../config/JSON';
+import {connect} from 'react-redux';
 
 function AnalyticsScreen(props) {
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const [shopAnalytics, setShopAnalytics] = useState([]);
+  const [bidAnalytics, setBidAnalytics] = useState([]);
+
+  const [searchShopAnalytics, setSearchShopAnalytics] = useState([]);
+  const [searchBidAnalytics, setSearchBidAnalytics] = useState([]);
+
+  useEffect(() => {
+    let reduxUser = props.userValue;
+
+    let tempShopAnalytics = reduxUser.analytics.filter(i => i.bid == false);
+    let tempBidAnalytics = reduxUser.analytics.filter(i => i.bid == true);
+
+    setShopAnalytics(tempShopAnalytics);
+    setBidAnalytics(tempBidAnalytics);
+  }, [props.userValue]);
+
+  const submitHandler = val => {
+    if (val) {
+      let reduxUser = props.userValue;
+      let tempAnalytics = reduxUser.analytics?.filter(m =>
+        m?.productName?.toLowerCase().includes(val?.toLowerCase()),
+      );
+
+      let tempShopAnalytics = tempAnalytics.filter(i => i.bid == false);
+      let tempBidAnalytics = tempAnalytics.filter(i => i.bid == true);
+
+      setSearchShopAnalytics(tempShopAnalytics);
+      setSearchBidAnalytics(tempBidAnalytics);
+    } else {
+      setSearchShopAnalytics(shopAnalytics);
+      setSearchBidAnalytics(bidAnalytics);
+    }
+  };
 
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
@@ -34,7 +67,11 @@ function AnalyticsScreen(props) {
         />
 
         <HeaderText
-          headerText={'Your'}
+          headerText={
+            shopAnalytics.length == 0 && bidAnalytics.length == 0
+              ? 'No'
+              : 'Your'
+          }
           likedScreen
           likedScreenText={' Analytics'}
           containerStyle={{
@@ -94,38 +131,78 @@ function AnalyticsScreen(props) {
           </TouchableOpacity>
         </View>
 
-        <TextInput search placeholder={'Search any product or keyword'} />
+        <TextInput
+          onChangeText={text => submitHandler(text)}
+          search
+          placeholder={'Search any product or keyword'}
+        />
 
         <DataTable style={{width: wp(90)}}>
-          <DataTable.Header>
-            <DataTable.Title>
-              <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
-            </DataTable.Title>
-            <DataTable.Title numeric>
-              <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
-            </DataTable.Title>
-            <DataTable.Title numeric>
-              <Text style={{fontFamily: fonts.RobotoBold}}>PAID</Text>
-            </DataTable.Title>
-          </DataTable.Header>
+          {selectedCategory == 0 ? (
+            <DataTable.Header>
+              <DataTable.Title>
+                <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
+              </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text style={{fontFamily: fonts.RobotoBold}}>PAID</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+          ) : (
+            <DataTable.Header>
+              <DataTable.Title>
+                <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
+              </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text style={{fontFamily: fonts.RobotoBold}}>OFFER</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+          )}
 
-          {ANALYTICS.map(item => (
-            <DataTable.Row>
-              <DataTable.Cell>
-                <Text style={{color: colors.textColor}}>
-                  {item.productName}
-                </Text>
-              </DataTable.Cell>
-              <DataTable.Cell numeric>
-                <Text style={{color: colors.textColor}}>{item.date}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell numeric>
-                <Text style={{fontFamily: fonts.RobotoBold}}>
-                  {'$' + item.paid}
-                </Text>
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))}
+          {selectedCategory == 0
+            ? searchShopAnalytics?.map(item => (
+                <DataTable.Row>
+                  <DataTable.Cell>
+                    <Text style={{color: colors.textColor}}>
+                      {item.productName}
+                    </Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={{color: colors.textColor, fontSize: wp(3)}}>
+                      {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
+                    </Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>
+                      {'$' + item.paid}
+                    </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))
+            : searchBidAnalytics?.map(item => (
+                <DataTable.Row>
+                  <DataTable.Cell>
+                    <Text style={{color: colors.textColor}}>
+                      {item.productName}
+                    </Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={{color: colors.textColor, fontSize: wp(3)}}>
+                      {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
+                    </Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>
+                      {'$' + item.offer}
+                    </Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))}
         </DataTable>
       </View>
     </ScrollView>
@@ -146,4 +223,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AnalyticsScreen;
+function mapStateToProps(state) {
+  return {
+    userValue: state.auth.user,
+  };
+}
+
+export default connect(mapStateToProps)(AnalyticsScreen);

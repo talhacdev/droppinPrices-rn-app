@@ -170,7 +170,48 @@ const initialState = {
     },
   ],
   cart: [],
+  categories: [
+    {
+      id: 0,
+      categoryName: 'All',
+    },
+    {
+      id: 1,
+      categoryName: 'Electronic',
+    },
+    {
+      id: 2,
+      categoryName: 'Tech',
+    },
+    {
+      id: 3,
+      categoryName: 'Sports',
+    },
+    {
+      id: 4,
+      categoryName: 'Food',
+    },
+  ],
+  user: {
+    analytics: [
+      {
+        id: 0,
+        bid: false,
+        productName: 'silver bag gucci',
+        time: moment(),
+        paid: 500,
+      },
+      {
+        id: 0,
+        bid: true,
+        productName: 'gucci bag gold',
+        time: moment(),
+        offer: 500,
+      },
+    ],
+  },
 };
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case UPDATE_PRODUCTS:
