@@ -24,12 +24,12 @@ function HomeScreen(props) {
   const [productsToBuy, setProductsToBuy] = useState([]);
   const [productsToBid, setProductsToBid] = useState([]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      turnToAuction();
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     turnToAuction();
+  //   }, 60000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   useEffect(() => {
     let reduxProducts = props.productsValue;
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: hp(15),
+    paddingBottom: hp(10),
     backgroundColor: colors.background,
   },
 });

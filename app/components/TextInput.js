@@ -45,6 +45,7 @@ function AppTextInput(props) {
         />
 
         <TouchableOpacity
+          onPress={props.onPress}
           style={{
             backgroundColor: colors.primary,
             padding: wp(4),

@@ -36,6 +36,7 @@ import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 function ProductDetailScreen(props) {
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState({});
+  const [bidSet, setBidSet] = useState('');
 
   const scrollRef = useRef();
 
@@ -57,18 +58,10 @@ function ProductDetailScreen(props) {
 
   const onPressButton = item => {
     if (item.bid) {
-      // place bid
+      onPressQuickBid();
     } else {
       onPressAddToCart(item);
     }
-  };
-
-  const onPressProductCard = item => {
-    props.navigation.navigate(routes.PRODUCT_DETAIL, {item}),
-      scrollRef.current?.scrollTo({
-        y: 0,
-        animated: true,
-      });
   };
 
   const onPressLike = item => {
@@ -125,6 +118,22 @@ function ProductDetailScreen(props) {
     var sDisplay = s > 0 ? s + (s == 1 ? 's' : 's') : '';
 
     return dDisplay + hDisplay + mDisplay + sDisplay;
+  };
+
+  const onPressSubmitYourBid = () => {
+    onPressQuickBid();
+  };
+
+  const onPressQuickBid = () => {
+    alert('not available yet');
+  };
+
+  const onPressCard = item => {
+    props.navigation.navigate(routes.PRODUCT_DETAIL, {item}),
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
   };
 
   return (
@@ -309,6 +318,8 @@ function ProductDetailScreen(props) {
                   borderRadius={wp(2)}
                   promoCode
                   placeholder={' '}
+                  onPress={() => onPressSubmitYourBid()}
+                  onChangeText={text => setBidSet(text)}
                 />
               </View>
             )}
@@ -456,7 +467,8 @@ function ProductDetailScreen(props) {
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
                 <ProductCard
-                  onPress={() => onPressProductCard(item)}
+                  onPressAdd={() => onPressAddToCart(item)}
+                  onPress={() => onPressCard(item)}
                   productName={item.productName}
                   price={item.price}
                   originalPrice={item.originalPrice}
@@ -464,11 +476,12 @@ function ProductDetailScreen(props) {
                   discount={calculateDiscount(item)}
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}
-                  auctionId={item.auctionId}
                   bid={item.bid}
+                  auctionId={item.auctionId}
                   description={item.description}
-                  onPressAdd={() => console.log('add pressed')}
+                  time={calculateCountdown(item)}
                   onPressLike={() => onPressLike(item)}
+                  onPressQuickBid={() => onPressQuickBid(item)}
                 />
               </View>
             )}
@@ -488,7 +501,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: hp(15),
+    paddingBottom: hp(10),
     backgroundColor: colors.background,
   },
   iconsContainer: {

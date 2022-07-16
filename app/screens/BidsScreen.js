@@ -94,7 +94,7 @@ function BidsScreen(props) {
   };
 
   const onPressQuickBid = item => {
-    alert('Not available yet');
+    alert('not available yet');
   };
 
   return (
@@ -105,13 +105,13 @@ function BidsScreen(props) {
           onPressDrawer={() => console.log('toggle drawer')}
         />
 
-        <HeaderText
+        {/* <HeaderText
           headerText={'Bid before the time gets stop...'}
           containerStyle={{
             width: props.width || wp(90),
             paddingVertical: props.paddingVertical || 10,
           }}
-        />
+        /> */}
 
         <Slider
           low={low}
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: hp(15),
+    paddingBottom: hp(10),
     backgroundColor: colors.background,
   },
 });

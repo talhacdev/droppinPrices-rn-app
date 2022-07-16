@@ -9,24 +9,17 @@ import routes from '../navigation/routes';
 
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
-import TextInput from '../components/TextInput';
-import CategoryButton from '../components/CategoryButton';
+import ProductCardHeader from '../components/ProductCardHeader';
+
 import Slider from '../components/Slider';
-import Button from '../components/Button';
 
 import colors from '../config/colors';
 
-import {categories as CATEGORIES} from '../config/JSON';
-
 import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
-import ProductCardHeader from '../components/ProductCardHeader';
 
 function ProductsScreen(props) {
-  const [selectedCategory, setSelectedCategory] = useState(0);
   const [productsToBuy, setProductsToBuy] = useState([]);
-  const [searchedProductsToBuy, setSearchedProductsToBuy] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const [low, setLow] = useState(0);
   const [high, setHigh] = useState(100);
@@ -60,7 +53,6 @@ function ProductsScreen(props) {
     let tempProductsToBuy = reduxProducts.filter(i => i.bid == false);
 
     setProductsToBuy(tempProductsToBuy);
-    setSearchedProductsToBuy(tempProductsToBuy);
   }, [props.productsValue]);
 
   const onPressLike = item => {
@@ -93,35 +85,6 @@ function ProductsScreen(props) {
     props.navigation.navigate(routes.PRODUCT_DETAIL, {item});
   };
 
-  const submitHandler = val => {
-    setSearchQuery(val);
-    setSelectedCategory(0);
-
-    if (val) {
-      let tempProducts = productsToBuy?.filter(m =>
-        m?.productName?.toLowerCase().includes(val?.toLowerCase()),
-      );
-
-      setSearchedProductsToBuy(tempProducts);
-    } else {
-      setSearchedProductsToBuy(productsToBuy);
-    }
-  };
-
-  const onPressCategory = item => {
-    setLow(0);
-    setHigh(100);
-    setSelectedCategory(item.id);
-
-    if (item.id) {
-      let tempProducts = productsToBuy?.filter(m => m.id == item?.id);
-
-      setSearchedProductsToBuy(tempProducts);
-    } else {
-      setSearchedProductsToBuy(productsToBuy);
-    }
-  };
-
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -129,31 +92,6 @@ function ProductsScreen(props) {
           onPressBack={() => props.navigation.goBack()}
           onPressDrawer={() => console.log('toggle drawer')}
         />
-
-        {/* <TextInput
-          defaultValue={searchQuery}
-          search
-          placeholder={'Search any product or keyword'}
-          onChangeText={text => submitHandler(text)}
-        /> */}
-
-        {/* <View style={{width: wp(90)}}>
-          <FlatList
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={CATEGORIES}
-            keyExtractor={CATEGORIES => CATEGORIES.id}
-            renderItem={({item}) => (
-              <View style={{paddingRight: wp(2)}}>
-                <CategoryButton
-                  onPress={() => onPressCategory(item)}
-                  selected={selectedCategory == item.id}
-                  item={item}
-                />
-              </View>
-            )}
-          />
-        </View> */}
 
         <Slider
           low={low}
@@ -212,7 +150,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: hp(15),
+    paddingBottom: hp(10),
     backgroundColor: colors.background,
   },
 });
