@@ -5,6 +5,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import routes from '../navigation/routes';
+
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import TextInput from '../components/TextInput';
@@ -14,7 +16,7 @@ import Button from '../components/Button';
 
 import colors from '../config/colors';
 
-import {products as PRODUCTS, categories as CATEGORIES} from '../config/JSON';
+import {categories as CATEGORIES} from '../config/JSON';
 
 import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
@@ -22,15 +24,43 @@ import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 function ProductsScreen(props) {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [productsToBuy, setProductsToBuy] = useState([]);
+  const [searchedProductsToBuy, setSearchedProductsToBuy] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const [low, setLow] = useState(20);
-  const [high, setHigh] = useState(80);
+  const [low, setLow] = useState(0);
+  const [high, setHigh] = useState(100);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(100);
 
   const handleValueChange = useCallback((low, high) => {
+    setSearchQuery('');
+    setSelectedCategory(0);
     setLow(low);
     setHigh(high);
+    if (low > 0 || high < 100) {
+      console.log('enter');
+      let array = [];
+      for (let i = 0; i < searchedProductsToBuy.length; i++) {
+        console.log('enter for');
+        let item = searchedProductsToBuy[i];
+        let discount = calculateDiscount(item);
+        if (discount > low && discount < high) {
+          array.push(searchedProductsToBuy[i]);
+        }
+        setSearchedProductsToBuy(array);
+      }
+      // setSearchedProductsToBuy(array);
+      // // alert('in the logic');
+      // let tempProducts = productsToBuy?.filter(
+      //   m => m?.discount >= low && m?.price <= high,
+      // );
+
+      // console.log('tempProducts: ', tempProducts);
+
+      // setSearchedProductsToBuy(tempProducts);
+      // } else {
+      //   setSearchedProductsToBuy(productsToBuy);
+    }
   }, []);
 
   useEffect(() => {
@@ -39,6 +69,7 @@ function ProductsScreen(props) {
     let tempProductsToBuy = reduxProducts.filter(i => i.bid == false);
 
     setProductsToBuy(tempProductsToBuy);
+    setSearchedProductsToBuy(tempProductsToBuy);
   }, [props.productsValue]);
 
   const onPressLike = item => {
@@ -71,6 +102,34 @@ function ProductsScreen(props) {
     props.navigation.navigate(routes.PRODUCT_DETAIL, {item});
   };
 
+  const submitHandler = val => {
+    setSearchQuery(val);
+    setSelectedCategory(0);
+
+    if (val) {
+      let tempProducts = productsToBuy?.filter(m =>
+        m?.productName?.toLowerCase().includes(val?.toLowerCase()),
+      );
+
+      setSearchedProductsToBuy(tempProducts);
+    } else {
+      setSearchedProductsToBuy(productsToBuy);
+    }
+  };
+
+  const onPressCategory = item => {
+    setSearchQuery('');
+    setSelectedCategory(item.id);
+
+    if (item.id) {
+      let tempProducts = productsToBuy?.filter(m => m.id == item?.id);
+
+      setSearchedProductsToBuy(tempProducts);
+    } else {
+      setSearchedProductsToBuy(productsToBuy);
+    }
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -79,7 +138,12 @@ function ProductsScreen(props) {
           onPressDrawer={() => console.log('toggle drawer')}
         />
 
-        <TextInput search placeholder={'Search any product or keyword'} />
+        <TextInput
+          defaultValue={searchQuery}
+          search
+          placeholder={'Search any product or keyword'}
+          onChangeText={text => submitHandler(text)}
+        />
 
         <View style={{width: wp(90)}}>
           <FlatList
@@ -90,7 +154,7 @@ function ProductsScreen(props) {
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
                 <CategoryButton
-                  onPress={() => setSelectedCategory(item.id)}
+                  onPress={() => onPressCategory(item)}
                   selected={selectedCategory == item.id}
                   item={item}
                 />
@@ -111,8 +175,8 @@ function ProductsScreen(props) {
           <FlatList
             numColumns={2}
             showsVerticalScrollIndicator={false}
-            data={productsToBuy}
-            keyExtractor={productsToBuy => productsToBuy.id}
+            data={searchedProductsToBuy}
+            keyExtractor={searchedProductsToBuy => searchedProductsToBuy.id}
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2), paddingBottom: wp(2)}}>
                 <ProductCard
