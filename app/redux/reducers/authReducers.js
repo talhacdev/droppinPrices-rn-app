@@ -7,6 +7,29 @@ const initialState = {
       id: 0,
       liked: false,
       productName: 'Coffee',
+      bid: true,
+      bids: [
+        {
+          userId: 0,
+          bidAmount: 1000,
+        },
+        {
+          userId: 1,
+          bidAmount: 2000,
+        },
+        {
+          userId: 2,
+          bidAmount: 3000,
+        },
+        {
+          userId: 3,
+          bidAmount: 4000,
+        },
+        {
+          userId: 4,
+          bidAmount: 5000,
+        },
+      ],
       auctionId: moment(),
       price: 700,
       minimumPrice: 9.9,
@@ -22,6 +45,8 @@ const initialState = {
       id: 1,
       liked: false,
       productName: 'Perfume',
+      bid: false,
+      bids: [],
       auctionId: null,
       price: 800,
       minimumPrice: 9.9,

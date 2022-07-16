@@ -13,6 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {DataTable} from 'react-native-paper';
+import moment from 'moment';
 
 import routes from '../navigation/routes';
 
@@ -31,7 +32,6 @@ import {
   categories as CATEGORIES,
   analytics as ANALYTICS,
 } from '../config/JSON';
-import HeaderText from '../components/HeaderText';
 import ProductCardHeader from '../components/ProductCardHeader';
 import images from '../config/images';
 
@@ -39,7 +39,6 @@ import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 
 function ProductDetailScreen(props) {
-  const [selectedCategory, setSelectedCategory] = useState();
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState({});
 
@@ -49,13 +48,20 @@ function ProductDetailScreen(props) {
     const item = props.route.params.item;
     let reduxProducts = props.productsValue;
     let tempProduct = reduxProducts.filter(i => i.id === item.id);
-    console.log('tempProduct: ', tempProduct);
     setProduct(tempProduct[0]);
     setProducts(reduxProducts);
   }, [props.productsValue]);
 
+  useEffect(() => {
+    const item = props.route.params.item;
+    let reduxProducts = props.productsValue;
+    let tempProduct = reduxProducts.filter(i => i.id === item.id);
+    setProduct(tempProduct[0]);
+    setProducts(reduxProducts);
+  });
+
   const onPressButton = item => {
-    if (item.auctionId) {
+    if (item.bid) {
       // place bid
     } else {
       onPressAddToCart(item);
@@ -92,6 +98,38 @@ function ProductDetailScreen(props) {
 
   const calculateDiscount = item => {
     return 100 - Math.round((item.price / item.originalPrice) * 100);
+  };
+
+  const calculateQuickBid = item => {
+    return 'QUICK BID $' + item.price;
+  };
+
+  const calculateHighestBid = item => {
+    return Math.max(...item.bids.map(o => o.bidAmount));
+  };
+
+  const calculateLowestBid = item => {
+    return Math.min(...item.bids.map(o => o.bidAmount));
+  };
+
+  const calculateCountdown = item => {
+    let now = moment(new Date());
+    let timestamp = item.timestamp;
+    let duration = moment.duration(now.diff(timestamp));
+    let seconds = duration.asSeconds();
+    let secondsLeft = 604800 - seconds;
+
+    var d = Math.floor(secondsLeft / (3600 * 24));
+    var h = Math.floor((secondsLeft % (3600 * 24)) / 3600);
+    var m = Math.floor((secondsLeft % 3600) / 60);
+    var s = Math.floor(secondsLeft % 60);
+
+    var dDisplay = d > 0 ? d + (d == 1 ? 'd, ' : 'd ') : '';
+    var hDisplay = h > 0 ? h + (h == 1 ? 'h ' : 'h ') : '';
+    var mDisplay = m > 0 ? m + (m == 1 ? 'm ' : 'm ') : '';
+    var sDisplay = s > 0 ? s + (s == 1 ? 's' : 's') : '';
+
+    return dDisplay + hDisplay + mDisplay + sDisplay;
   };
 
   return (
@@ -205,7 +243,7 @@ function ProductDetailScreen(props) {
             </Text>
           </View>
 
-          {product.auctionId && (
+          {product?.bids?.length >= 1 && (
             <View
               style={{
                 borderRadius: wp(2),
@@ -231,47 +269,7 @@ function ProductDetailScreen(props) {
                     color: colors.textColor,
                     fontFamily: fonts.RobotoBold,
                   }}>
-                  $11,000
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: wp(80),
-                  backgroundColor: colors.secondary,
-                  padding: wp(4),
-                  borderTopWidth: wp(0.1),
-                  borderTopColor: colors.textColor,
-                }}>
-                <Text style={{color: colors.textColor}}>Higher Bid</Text>
-                <Text
-                  style={{
-                    color: colors.textColor,
-                    fontFamily: fonts.RobotoBold,
-                  }}>
-                  $11,000
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: wp(80),
-                  backgroundColor: colors.secondary,
-                  padding: wp(4),
-                  borderTopWidth: wp(0.1),
-                  borderTopColor: colors.textColor,
-                }}>
-                <Text style={{color: colors.textColor}}>Higher Bid</Text>
-                <Text
-                  style={{
-                    color: colors.textColor,
-                    fontFamily: fonts.RobotoBold,
-                  }}>
-                  $11,000
+                  {'$' + calculateHighestBid(product)}
                 </Text>
               </View>
               <View
@@ -287,17 +285,18 @@ function ProductDetailScreen(props) {
                   borderTopWidth: wp(0.1),
                   borderTopColor: colors.textColor,
                 }}>
-                <Text style={{color: colors.textColor}}>Higher Bid</Text>
+                <Text style={{color: colors.textColor}}>Lowest Bid</Text>
                 <Text
                   style={{
                     color: colors.textColor,
                     fontFamily: fonts.RobotoBold,
                   }}>
-                  $11,000
+                  {'$' + calculateLowestBid(product)}
                 </Text>
               </View>
             </View>
           )}
+
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Button
               onPress={() => onPressButton(product)}
@@ -305,14 +304,21 @@ function ProductDetailScreen(props) {
               fontSize={wp(3.5)}
               height={hp(8)}
               borderRadius={wp(2)}
-              title={product.auctionId ? 'QUICK BID $900.00' : 'Add to Cart'}
+              title={product.bid ? calculateQuickBid(product) : 'Add to Cart'}
             />
+
+            {product.bid && (
+              <View style={styles.center}>
+                <TextInput
+                  bid
+                  borderRadius={wp(2)}
+                  promoCode
+                  placeholder={' '}
+                />
+              </View>
+            )}
           </View>
-          {product.auctionId && (
-            <View style={styles.center}>
-              <TextInput bid borderRadius={wp(2)} promoCode placeholder={' '} />
-            </View>
-          )}
+
           <View
             style={{
               width: wp(90),
@@ -384,7 +390,8 @@ function ProductDetailScreen(props) {
             </Text>
           </View>
         </View>
-        {product.auctionId && (
+
+        {product?.bids?.length >= 1 && (
           <DataTable style={{width: wp(90), paddingBottom: hp(4)}}>
             <View>
               <Text
@@ -401,30 +408,36 @@ function ProductDetailScreen(props) {
                 <Text style={{fontFamily: fonts.RobotoBold}}>Price</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={{width: wp('33%')}}>
-                <Text style={{fontFamily: fonts.RobotoBold}}>Maximum Bid</Text>
+              <DataTable.Title numeric style={{width: wp('33%')}}>
+                <Text style={{fontFamily: fonts.RobotoBold}}>Maxiumum Bid</Text>
               </DataTable.Title>
 
               <DataTable.Title
+                numeric
                 style={{width: wp('33%'), justifyContent: 'flex-end'}}>
                 <Text style={{fontFamily: fonts.RobotoBold}}>Expiration</Text>
               </DataTable.Title>
             </DataTable.Header>
 
-            {ANALYTICS.map(item => (
+            {product.bids.map(item => (
               <DataTable.Row>
                 <DataTable.Cell style={{width: wp('33%')}}>
-                  <Text style={{color: colors.textColor}}>{'$17,659'}</Text>
+                  <Text style={{color: colors.textColor}}>
+                    {'$' + item.bidAmount}
+                  </Text>
                 </DataTable.Cell>
 
-                <DataTable.Cell style={{width: wp('33%')}}>
-                  <Text style={{color: colors.textColor}}>{'$2,456,120'}</Text>
+                <DataTable.Cell numeric style={{width: wp('33%')}}>
+                  <Text style={{color: colors.textColor}}>
+                    {'$' + calculateHighestBid(product)}
+                  </Text>
                 </DataTable.Cell>
 
                 <DataTable.Cell
+                  numeric
                   style={{width: wp('33%'), justifyContent: 'flex-end'}}>
                   <Text style={{color: colors.textColor}}>
-                    {'2d 14h 5m 11s'}
+                    {calculateCountdown(item)}
                   </Text>
                 </DataTable.Cell>
               </DataTable.Row>
@@ -457,6 +470,7 @@ function ProductDetailScreen(props) {
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}
                   auctionId={item.auctionId}
+                  bid={item.bid}
                   description={item.description}
                   onPressAdd={() => console.log('add pressed')}
                   onPressLike={() => onPressLike(item)}

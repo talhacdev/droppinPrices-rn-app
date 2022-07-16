@@ -208,7 +208,7 @@ function ProductCard(props) {
                   color: colors.secondary,
                   fontSize: wp(3),
                 }}>
-                {'Auc# ' + props.auctionId}
+                {'Auc#' + props.auctionId}
               </Text>
             </View>
           </View>

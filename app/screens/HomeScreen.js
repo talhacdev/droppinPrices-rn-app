@@ -34,8 +34,8 @@ function HomeScreen(props) {
   useEffect(() => {
     let reduxProducts = props.productsValue;
 
-    let tempProductsToBuy = reduxProducts.filter(i => i.auctionId == null);
-    let tempProductsToBid = reduxProducts.filter(i => i.auctionId !== null);
+    let tempProductsToBuy = reduxProducts.filter(i => i.bid == false);
+    let tempProductsToBid = reduxProducts.filter(i => i.bid == true);
 
     setProductsToBuy(tempProductsToBuy);
     setProductsToBid(tempProductsToBid);
@@ -45,13 +45,14 @@ function HomeScreen(props) {
     let reduxProducts = props.productsValue;
 
     for (let i = 0; i < reduxProducts.length; i++) {
-      if (reduxProducts[i].auctionId == null) {
+      if (reduxProducts[i].bid == false) {
         var now = moment(new Date());
         var timestamp = reduxProducts[i].timestamp;
         var duration = moment.duration(now.diff(timestamp));
         var hours = duration.asHours();
         if (hours > 0.3) {
           reduxProducts[i].auctionId = moment();
+          reduxProducts[i].bid = true;
           props.updateProducts([...reduxProducts]);
         }
       }
@@ -138,6 +139,7 @@ function HomeScreen(props) {
                   discount={calculateDiscount(item)}
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}
+                  bid={item.bid}
                   auctionId={item.auctionId}
                   description={item.description}
                   onPressAdd={() => onPressAddToCart(item)}
