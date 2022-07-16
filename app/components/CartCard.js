@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
+    width: wp(14),
     height: hp(8),
     resizeMode: 'contain',
   },

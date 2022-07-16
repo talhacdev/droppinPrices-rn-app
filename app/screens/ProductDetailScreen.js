@@ -21,17 +21,12 @@ import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import TextInput from '../components/TextInput';
 import CategoryButton from '../components/CategoryButton';
-import Slider from '../components/Slider';
 import Button from '../components/Button';
 
 import fonts from '../config/fonts';
 import colors from '../config/colors';
 
-import {
-  products as PRODUCTS,
-  categories as CATEGORIES,
-  analytics as ANALYTICS,
-} from '../config/JSON';
+import {categories as CATEGORIES} from '../config/JSON';
 import ProductCardHeader from '../components/ProductCardHeader';
 import images from '../config/images';
 

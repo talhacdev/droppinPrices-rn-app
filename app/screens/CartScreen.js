@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -21,9 +21,18 @@ import fonts from '../config/fonts';
 import images from '../config/images';
 import colors from '../config/colors';
 
-import {products as PRODUCTS} from '../config/JSON';
+import {connect} from 'react-redux';
+import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 
 function CartScreen(props) {
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    let reduxCart = props.cartValue;
+
+    setCart(reduxCart);
+  }, [props.cartValue, props.productsValue]);
+
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -107,8 +116,8 @@ function CartScreen(props) {
           <View style={{width: wp(90), paddingBottom: hp(2)}}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={PRODUCTS}
-              keyExtractor={PRODUCTS => PRODUCTS.id}
+              data={cart}
+              keyExtractor={cart => cart.id}
               renderItem={({item}) => (
                 <View style={{paddingRight: wp(2)}}>
                   <CartCard
@@ -221,4 +230,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartScreen;
+function mapStateToProps(state) {
+  return {
+    productsValue: state.auth.products,
+    cartValue: state.auth.cart,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateProducts: payload => dispatch(UpdateProducts(payload)),
+    updateCart: payload => dispatch(UpdateCart(payload)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartScreen);
