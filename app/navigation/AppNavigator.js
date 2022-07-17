@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, View, Text} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,9 +15,12 @@ import LikedNavigator from './LikedNavigator';
 import images from '../config/images';
 import colors from '../config/colors';
 
+import {connect} from 'react-redux';
+import {UpdateCart} from '../redux/actions/AuthActions';
+
 const Tab = createBottomTabNavigator();
 
-const AppNavigator = () => {
+const AppNavigator = props => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -57,10 +60,26 @@ const AppNavigator = () => {
         name="CartNavigator"
         options={{
           tabBarIcon: ({focused}) => (
-            <Image
-              style={styles.image}
-              source={focused ? images.cartActive : images.cartInActive}
-            />
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                style={styles.image}
+                source={focused ? images.cartActive : images.cartInActive}
+              />
+              {props.cart.length > 0 ? (
+                <View
+                  style={{
+                    backgroundColor: colors.primary,
+                    paddingHorizontal: wp(1),
+                    height: hp(5),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={{color: colors.background}}>
+                    {props.cart.length}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
           ),
         }}
         component={CartNavigator}
@@ -114,4 +133,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppNavigator;
+function mapStateToProps(state) {
+  return {
+    cart: state.auth.cart,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateCart: payload => dispatch(UpdateCart(payload)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppNavigator);
