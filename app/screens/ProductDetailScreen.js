@@ -26,7 +26,6 @@ import Button from '../components/Button';
 import fonts from '../config/fonts';
 import colors from '../config/colors';
 
-import {categories as CATEGORIES} from '../config/JSON';
 import ProductCardHeader from '../components/ProductCardHeader';
 import images from '../config/images';
 
@@ -37,15 +36,22 @@ function ProductDetailScreen(props) {
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState({});
   const [bidSet, setBidSet] = useState('');
+  const [category, setCategory] = useState({});
 
   const scrollRef = useRef();
 
   useEffect(() => {
     const item = props.route.params.item;
+
     let reduxProducts = props.productsValue;
+    let reduxCategories = props.categoriesValue;
+
     let tempProduct = reduxProducts.filter(i => i.id === item.id);
+    let tempCategory = reduxCategories.filter(i => i.id === item.id);
+
     setProduct(tempProduct[0]);
     setProducts(reduxProducts);
+    setCategory(tempCategory[0]);
   }, [props.productsValue]);
 
   useEffect(() => {
@@ -153,22 +159,13 @@ function ProductDetailScreen(props) {
           noViewAll
         />
 
-        <View style={{width: wp(90)}}>
-          <FlatList
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={CATEGORIES}
-            keyExtractor={CATEGORIES => CATEGORIES.id}
-            renderItem={({item}) => (
-              <View style={{paddingRight: wp(2)}}>
-                <CategoryButton
-                  disabled
-                  selected={product.id == item.id}
-                  item={item}
-                />
-              </View>
-            )}
-          />
+        <View
+          style={{
+            width: wp(90),
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }}>
+          <CategoryButton disabled selected={true} item={category} />
         </View>
 
         <View
@@ -308,7 +305,7 @@ function ProductDetailScreen(props) {
               fontSize={wp(3.5)}
               height={hp(8)}
               borderRadius={wp(2)}
-              title={product.bid ? calculateQuickBid(product) : 'Add to Cart'}
+              title={product.bid ? calculateQuickBid(product) : 'ADD TO CART'}
             />
 
             {product.bid && (
@@ -525,6 +522,7 @@ function mapStateToProps(state) {
   return {
     productsValue: state.auth.products,
     cartValue: state.auth.cart,
+    categoriesValue: state.auth.categories,
   };
 }
 

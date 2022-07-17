@@ -15,13 +15,12 @@ import CategoryButton from '../components/CategoryButton';
 
 import colors from '../config/colors';
 
-import {categories as CATEGORIES} from '../config/JSON';
-
 import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 import ProductCardHeader from '../components/ProductCardHeader';
 
 function SearchScreen(props) {
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState([]);
@@ -29,21 +28,29 @@ function SearchScreen(props) {
 
   useEffect(() => {
     let reduxProducts = props.productsValue;
+    let reduxCategories = props.categoriesValue;
 
     setProducts(reduxProducts);
     setSearchedProducts(reduxProducts);
+    setCategories(reduxCategories);
   }, [props.productsValue]);
 
   const onPressCategory = item => {
     setSearchQuery('');
-    setSelectedCategory(item.id);
 
-    if (item.id) {
-      let tempProducts = products?.filter(m => m.id == item?.id);
-
-      setSearchedProducts(tempProducts);
-    } else {
+    if (item.id == 0) {
+      setSelectedCategory(0);
       setSearchedProducts(products);
+    } else {
+      setSelectedCategory(item.id);
+
+      if (item.id) {
+        let tempProducts = products?.filter(m => m.category == item.id);
+
+        setSearchedProducts(tempProducts);
+      } else {
+        setSearchedProducts(products);
+      }
     }
   };
 
@@ -94,7 +101,6 @@ function SearchScreen(props) {
 
   const calculateCountdown = item => {
     let now = moment(new Date());
-    console.log('item timestamp: ', item);
     let timestamp = item.timestamp;
     let duration = moment.duration(now.diff(timestamp));
     let seconds = duration.asSeconds();
@@ -133,8 +139,8 @@ function SearchScreen(props) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={CATEGORIES}
-            keyExtractor={CATEGORIES => CATEGORIES.id}
+            data={categories}
+            keyExtractor={categories => categories.id}
             renderItem={({item}) => (
               <View style={{paddingRight: wp(2)}}>
                 <CategoryButton
@@ -208,6 +214,7 @@ function mapStateToProps(state) {
   return {
     productsValue: state.auth.products,
     cartValue: state.auth.cart,
+    categoriesValue: state.auth.categories,
   };
 }
 

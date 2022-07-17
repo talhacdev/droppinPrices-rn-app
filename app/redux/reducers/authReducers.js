@@ -36,7 +36,7 @@ const initialState = {
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: '0',
+      category: 1,
       timestamp: moment(),
       description:
         "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
@@ -53,7 +53,7 @@ const initialState = {
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: '0',
+      category: 2,
       timestamp: moment(),
       description:
         "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
@@ -91,7 +91,7 @@ const initialState = {
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: '0',
+      category: 2,
       timestamp: moment(),
       description:
         "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
@@ -129,7 +129,7 @@ const initialState = {
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: '0',
+      category: 1,
       timestamp: moment(),
       description:
         "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
@@ -146,7 +146,7 @@ const initialState = {
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: '0',
+      category: 3,
       timestamp: moment(),
       description:
         "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
@@ -163,7 +163,7 @@ const initialState = {
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: '0',
+      category: 4,
       timestamp: moment(),
       description:
         "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
