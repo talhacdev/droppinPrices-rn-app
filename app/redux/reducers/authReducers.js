@@ -5,7 +5,7 @@ const initialState = {
   products: [
     {
       id: 0,
-      liked: false,
+      liked: true,
       productName: 'Coffee',
       bid: true,
       bids: [
@@ -30,16 +30,16 @@ const initialState = {
           bidAmount: 5000,
         },
       ],
-      auctionId: moment(),
-      price: 700,
+      auctionId: moment().format('HHMMSS' + Math.random() * (1 - 0) + 0),
+      price: 500,
       minimumPrice: 9.9,
       originalPrice: 1000,
       image:
-        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
+        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/coffee.png?alt=media&token=75577663-504b-4ca5-9051-74a4c9eed60c',
       category: 1,
       timestamp: moment(),
       description:
-        "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+        'Coffee Coffee Coffee Coffee Coffee Coffee Coffee Coffee Coffee Coffee.',
     },
     {
       id: 1,
@@ -48,7 +48,7 @@ const initialState = {
       bid: false,
       bids: [],
       auctionId: null,
-      price: 800,
+      price: 600,
       minimumPrice: 9.9,
       originalPrice: 1000,
       image:
@@ -56,12 +56,12 @@ const initialState = {
       category: 2,
       timestamp: moment(),
       description:
-        "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+        'Perfume Perfume Perfume Perfume Perfume Perfume Perfume Perfume Perfume Perfume Perfume.',
     },
     {
       id: 2,
       liked: false,
-      productName: 'Coffee',
+      productName: 'Cake',
       bid: true,
       bids: [
         {
@@ -85,21 +85,20 @@ const initialState = {
           bidAmount: 5000,
         },
       ],
-      auctionId: moment(),
+      auctionId: moment().format('HHMMSS' + Math.random() * (1 - 0) + 0),
       price: 700,
       minimumPrice: 9.9,
       originalPrice: 1000,
       image:
-        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
+        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/headphones.png?alt=media&token=fed855f8-7917-4a80-a2cc-3e1c247e1769',
       category: 2,
       timestamp: moment(),
-      description:
-        "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+      description: 'Cake Cake Cake Cake Cake Cake Cake Cake Cake Cake.',
     },
     {
       id: 4,
       liked: false,
-      productName: 'Coffee',
+      productName: 'Biscuit',
       bid: true,
       bids: [
         {
@@ -123,53 +122,86 @@ const initialState = {
           bidAmount: 5000,
         },
       ],
-      auctionId: moment(),
-      price: 700,
+      auctionId: moment().format('HHMMSS' + Math.random() * (1 - 0) + 0),
+      price: 800,
       minimumPrice: 9.9,
       originalPrice: 1000,
       image:
-        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
+        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/coffee.png?alt=media&token=75577663-504b-4ca5-9051-74a4c9eed60c',
       category: 1,
       timestamp: moment(),
       description:
-        "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+        'Biscuit Biscuit Biscuit Biscuit Biscuit Biscuit Biscuit Biscuit Biscuit Biscuit.',
     },
     {
       id: 5,
       liked: false,
-      productName: 'Perfume',
+      productName: 'Beer',
       bid: false,
       bids: [],
       auctionId: null,
-      price: 800,
+      price: 900,
       minimumPrice: 9.9,
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
       category: 3,
       timestamp: moment(),
-      description:
-        "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+      description: 'Beer Beer Beer Beer Beer Beer Beer Beer Beer Beer.',
     },
     {
       id: 6,
-      liked: false,
-      productName: 'Perfume',
+      liked: true,
+      productName: 'Vodka',
       bid: false,
       bids: [],
       auctionId: null,
-      price: 800,
+      price: 1000,
+      minimumPrice: 9.9,
+      originalPrice: 1000,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/headphones.png?alt=media&token=fed855f8-7917-4a80-a2cc-3e1c247e1769',
+      category: 4,
+      timestamp: moment(),
+      description:
+        'Vodka Vodka Vodka Vodka Vodka Vodka Vodka Vodka Vodka Vodka.',
+    },
+  ],
+  cart: [
+    {
+      id: 6,
+      liked: true,
+      productName: 'Vodka',
+      bid: false,
+      bids: [],
+      auctionId: null,
+      price: 1000,
+      minimumPrice: 9.9,
+      originalPrice: 1000,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/headphones.png?alt=media&token=fed855f8-7917-4a80-a2cc-3e1c247e1769',
+      category: 4,
+      timestamp: moment(),
+      description:
+        'Vodka Vodka Vodka Vodka Vodka Vodka Vodka Vodka Vodka Vodka.',
+    },
+    {
+      id: 5,
+      liked: false,
+      productName: 'Beer',
+      bid: false,
+      bids: [],
+      auctionId: null,
+      price: 900,
       minimumPrice: 9.9,
       originalPrice: 1000,
       image:
         'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/perfume.png?alt=media&token=d825b331-1d49-45d4-9aad-da9280478225',
-      category: 4,
+      category: 3,
       timestamp: moment(),
-      description:
-        "Coffee Queen Hip Hop Jewelry diamond cuban link chain 100% Real Solid Yellow gold of approximately 199.01 Grams weight and showcase natural 26.31 carats of prong setting cut diamond with FG/GH color & VS2/SI1/SI2/I1 clarity diamond. This mens chains available in 10k/14k/18k gold purity and yellow/rose/white gold. You'll get best price guarantee, Free us Shipping, 30 Days Return, Worldwide Shipping.",
+      description: 'Beer Beer Beer Beer Beer Beer Beer Beer Beer Beer.',
     },
   ],
-  cart: [],
   categories: [
     {
       id: 0,

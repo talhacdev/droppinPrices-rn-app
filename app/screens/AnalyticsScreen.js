@@ -38,6 +38,8 @@ function AnalyticsScreen(props) {
 
     setShopAnalytics(tempShopAnalytics);
     setBidAnalytics(tempBidAnalytics);
+    setSearchShopAnalytics(tempShopAnalytics);
+    setSearchBidAnalytics(tempBidAnalytics);
   }, [props.userValue]);
 
   const submitHandler = val => {
