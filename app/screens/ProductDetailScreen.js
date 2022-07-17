@@ -47,7 +47,7 @@ function ProductDetailScreen(props) {
     let reduxCategories = props.categoriesValue;
 
     let tempProduct = reduxProducts.filter(i => i.id === item.id);
-    let tempCategory = reduxCategories.filter(i => i.id === item.id);
+    let tempCategory = reduxCategories.filter(i => i.id === item.category);
 
     setProduct(tempProduct[0]);
     setProducts(reduxProducts);
