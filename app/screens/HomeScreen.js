@@ -4,8 +4,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import auth from '@react-native-firebase/auth';
 import moment from 'moment';
+import firestore from '@react-native-firebase/firestore';
 
 import routes from '../navigation/routes';
 
@@ -17,7 +17,12 @@ import Carousel from '../components/Carousel';
 import colors from '../config/colors';
 
 import {connect} from 'react-redux';
-import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
+import {
+  UpdateCart,
+  UpdateCategories,
+  UpdateProducts,
+  UpdateUser,
+} from '../redux/actions/AuthActions';
 
 function HomeScreen(props) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -30,6 +35,36 @@ function HomeScreen(props) {
   //   }, 60000);
   //   return () => clearInterval(interval);
   // }, []);
+
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  const fetch = async () => {
+    await firestore()
+      .collection('products')
+      .get()
+      .then(res => {
+        props.updateProducts([...res]);
+      })
+      .catch(error => alert('products: ', error));
+
+    await firestore()
+      .collection('categories')
+      .get()
+      .then(res => {
+        props.updateCategories([...res]);
+      })
+      .catch(error => alert('categories: ', error));
+
+    await firestore()
+      .collection('users')
+      .get()
+      .then(res => {
+        props.updateUser([...res]);
+      })
+      .catch(error => alert('users: ', error));
+  };
 
   useEffect(() => {
     let reduxProducts = props.productsValue;
@@ -179,6 +214,8 @@ function mapDispatchToProps(dispatch) {
   return {
     updateProducts: payload => dispatch(UpdateProducts(payload)),
     updateCart: payload => dispatch(UpdateCart(payload)),
+    updateCategories: payload => dispatch(UpdateCategories(payload)),
+    updateUser: payload => dispatch(UpdateUser(payload)),
   };
 }
 

@@ -1,4 +1,9 @@
-import {UPDATE_CART, UPDATE_PRODUCTS, UPDATE_CATEGORIES} from '../types';
+import {
+  UPDATE_CART,
+  UPDATE_PRODUCTS,
+  UPDATE_CATEGORIES,
+  UPDATE_USER,
+} from '../types';
 
 export const UpdateProducts = payload => ({
   type: UPDATE_PRODUCTS,
@@ -12,5 +17,10 @@ export const UpdateCart = payload => ({
 
 export const UpdateCategories = payload => ({
   type: UPDATE_CATEGORIES,
+  payload,
+});
+
+export const UpdateUser = payload => ({
+  type: UPDATE_USER,
   payload,
 });
