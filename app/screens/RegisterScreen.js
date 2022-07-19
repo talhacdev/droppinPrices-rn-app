@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, KeyboardAvoidingView, Keyboard} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
@@ -53,13 +54,36 @@ function RegisterScreen(props) {
     if (email || password || confirmPassword) {
       auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          console.log('User account created & signed in!');
+        .then(res => {
+          console.log('User account created & signed in!: ');
+          createUser(res);
         })
         .catch(error => {
           alert(error);
         });
     }
+  };
+
+  const createUser = res => {
+    let userObject = {
+      displayName: res.user.displayName,
+      email: res.user.email,
+      location: null,
+      phoneNumber: res.user.phoneNumber,
+      photoURL: res.user.photoURL,
+      uid: res.user.uid,
+    };
+
+    firestore()
+      .collection('Users')
+      .doc(userObject.uid)
+      .set(userObject)
+      .then(() => {
+        console.log('User Created!');
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   return (
@@ -98,11 +122,11 @@ function RegisterScreen(props) {
             onPress={() => onPressSignUp()}
             title={'Sign up'}
           />
-          <Button
+          {/* <Button
             onPress={() => onPressSkipToHome()}
             backgroundColor={colors.secondary}
             title={'Skip to Home'}
-          />
+          /> */}
         </View>
       </View>
       {!isKeyboardVisible && (

@@ -88,11 +88,11 @@ function LoginScreen(props) {
             disabled={!email || !password}
             title={'Login'}
           />
-          <Button
+          {/* <Button
             onPress={() => onPressSkipToHome()}
             backgroundColor={colors.secondary}
             title={'Skip to Home'}
-          />
+          /> */}
         </View>
       </View>
       {!isKeyboardVisible && (

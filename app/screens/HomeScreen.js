@@ -45,7 +45,8 @@ function HomeScreen(props) {
       .collection('products')
       .get()
       .then(res => {
-        props.updateProducts([...res]);
+        console.log('products res: ', res.docs);
+        props.updateProducts([...res.docs]);
       })
       .catch(error => alert('products: ', error));
 
@@ -53,7 +54,8 @@ function HomeScreen(props) {
       .collection('categories')
       .get()
       .then(res => {
-        props.updateCategories([...res]);
+        console.log('categories res: ', res.docs);
+        props.updateCategories([...res.docs._data.categories]);
       })
       .catch(error => alert('categories: ', error));
 
@@ -61,7 +63,8 @@ function HomeScreen(props) {
       .collection('users')
       .get()
       .then(res => {
-        props.updateUser([...res]);
+        console.log('users res: ', res.docs._data);
+        props.updateUser([...res.docs]);
       })
       .catch(error => alert('users: ', error));
   };
@@ -131,11 +134,6 @@ function HomeScreen(props) {
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Header
-          onPressBack={() => props.navigation.goBack()}
-          onPressDrawer={() => console.log('toggle drawer')}
-        />
-
         <ProductCardHeader
           onPress={() => props.navigation.navigate(routes.BIDS)}
           textLeft={'Bid'}
@@ -198,6 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: hp(2),
     paddingBottom: hp(10),
     backgroundColor: colors.background,
   },
