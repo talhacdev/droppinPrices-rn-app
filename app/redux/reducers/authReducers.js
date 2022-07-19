@@ -1,4 +1,4 @@
-import {UPDATE_PRODUCTS, UPDATE_CART} from '../types';
+import {UPDATE_PRODUCTS, UPDATE_CART, UPDATE_CATEGORIES} from '../types';
 import moment from 'moment';
 
 const initialState = {
@@ -262,6 +262,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         cart: [...action.payload],
+      };
+
+    case UPDATE_CATEGORIES:
+      console.log('UPDATE_CATEGORIES is called: ', action.payload);
+      return {
+        ...state,
+        categories: [...action.payload],
       };
 
     default:
