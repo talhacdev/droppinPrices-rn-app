@@ -39,16 +39,16 @@ function RegisterScreen(props) {
     };
   }, []);
 
-  const onPressSkipToHome = () => {
-    auth()
-      .signInAnonymously()
-      .then(() => {
-        console.log('User signed in anonymously');
-      })
-      .catch(error => {
-        alert(error);
-      });
-  };
+  // const onPressSkipToHome = () => {
+  //   auth()
+  //     .signInAnonymously()
+  //     .then(() => {
+  //       console.log('User signed in anonymously');
+  //     })
+  //     .catch(error => {
+  //       alert(error);
+  //     });
+  // };
 
   const onPressSignUp = () => {
     if (email || password || confirmPassword) {
@@ -66,12 +66,14 @@ function RegisterScreen(props) {
 
   const createUser = res => {
     let userObject = {
+      isAdmin: false,
       displayName: res.user.displayName,
       email: res.user.email,
       location: null,
       phoneNumber: res.user.phoneNumber,
       photoURL: res.user.photoURL,
       uid: res.user.uid,
+      analytics: [],
     };
 
     firestore()

@@ -5,6 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import moment from 'moment';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 import routes from '../navigation/routes';
@@ -41,30 +42,36 @@ function HomeScreen(props) {
   }, []);
 
   const fetch = async () => {
-    await firestore()
-      .collection('products')
-      .get()
-      .then(res => {
-        console.log('products res: ', res.docs);
-        props.updateProducts([...res.docs]);
-      })
-      .catch(error => alert('products: ', error));
+    // await firestore()
+    //   .collection('products')
+    //   .get()
+    //   .then(res => {
+    //     console.log('products res: ', res.docs);
+    //     props.updateProducts([...res.docs]);
+    //   })
+    //   .catch(error => alert('products: ', error));
+
+    // await firestore()
+    //   .collection('categories')
+    //   .get()
+    //   .then(res => {
+    //     console.log('categories res: ', res.docs);
+    //     props.updateCategories([...res.docs._data.categories]);
+    //   })
+    //   .catch(error => alert('categories: ', error));
+
+    let loggedInUserId = auth()._user.uid;
 
     await firestore()
-      .collection('categories')
+      .collection('Users')
+      .where('uid', '==', loggedInUserId)
       .get()
       .then(res => {
-        console.log('categories res: ', res.docs);
-        props.updateCategories([...res.docs._data.categories]);
-      })
-      .catch(error => alert('categories: ', error));
-
-    await firestore()
-      .collection('users')
-      .get()
-      .then(res => {
-        console.log('users res: ', res.docs._data);
-        props.updateUser([...res.docs]);
+        if (res.docs) {
+          let response = res.docs;
+          let user = response[0]._data;
+          props.updateUser(user);
+        }
       })
       .catch(error => alert('users: ', error));
   };

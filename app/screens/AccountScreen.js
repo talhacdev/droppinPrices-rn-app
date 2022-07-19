@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -16,22 +16,18 @@ import auth from '@react-native-firebase/auth';
 import routes from '../navigation/routes';
 
 import Header from '../components/Header';
+import Button from '../components/Button';
 
+import fonts from '../config/fonts';
+import images from '../config/images';
 import colors from '../config/colors';
 
 import {connect} from 'react-redux';
-import fonts from '../config/fonts';
-import images from '../config/images';
-import Button from '../components/Button';
 
 function AccountScreen(props) {
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    let reduxUser = props.userValue;
-
-    setUser(reduxUser);
-  }, [props.productsValue]);
+  const onPressUploadProducts = () => {
+    console.log('onPressUploadProducts');
+  };
 
   const onPressLogout = () => {
     auth()
@@ -48,18 +44,20 @@ function AccountScreen(props) {
             borderBottomLeftRadius: wp(8),
             borderBottomRightRadius: wp(8),
           }}>
-          <Header
-            onPressBack={() => props.navigation.goBack()}
-            onPressDrawer={() => console.log('toggle drawer')}
-          />
+          <Header onPressBack={() => props.navigation.goBack()} />
           <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.image} source={{uri: user.image}} />
-            </View>
+            {props.userValue.photoURL && (
+              <View style={styles.imageContainer}>
+                <Image
+                  style={styles.image}
+                  source={{uri: props.userValue.photoURL}}
+                />
+              </View>
+            )}
             <View
               style={{
                 justifyContent: 'center',
@@ -73,7 +71,7 @@ function AccountScreen(props) {
                   fontSize: wp(4.5),
                   color: colors.buttonText,
                 }}>
-                {user.name}
+                {props.userValue.email ? props.userValue.email : 'email'}
               </Text>
               <View
                 style={{
@@ -90,7 +88,9 @@ function AccountScreen(props) {
                     color: colors.buttonText,
                     opacity: 0.5,
                   }}>
-                  {user.location}
+                  {props.userValue.location
+                    ? props.userValue.location
+                    : 'location'}
                 </Text>
               </View>
             </View>
@@ -129,15 +129,18 @@ function AccountScreen(props) {
           </TouchableOpacity>
           <View style={{backgroundColor: colors.search, height: hp(0.1)}} />
         </View>
-      </View>
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <View style={styles.buttonContainer}>
+        {props.userValue.isAdmin && (
           <Button
             backgroundColor={colors.secondary}
-            onPress={() => onPressLogout()}
-            title={'Log Out'}
+            onPress={() => onPressUploadProducts()}
+            title={'Upload Products'}
           />
-        </View>
+        )}
+        <Button
+          backgroundColor={colors.secondary}
+          onPress={() => onPressLogout()}
+          title={'Log Out'}
+        />
       </View>
     </ScrollView>
   );

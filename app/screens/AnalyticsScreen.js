@@ -82,130 +82,138 @@ function AnalyticsScreen(props) {
           }}
         />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            borderRadius: 8,
-            marginTop: hp(1),
-            marginBottom: hp(2),
-          }}>
-          <TouchableOpacity
-            onPress={() => setSelectedCategory(0)}
-            style={{
-              backgroundColor:
-                selectedCategory == 0 ? colors.primary : colors.background,
-              width: wp(25),
-              height: hp(8),
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderTopLeftRadius: 8,
-              borderBottomLeftRadius: 8,
-            }}>
-            <Text
+        {shopAnalytics.length >= 1 && bidAnalytics.length >= 1 && (
+          <>
+            <View
               style={{
-                color:
-                  selectedCategory == 0 ? colors.background : colors.textColor,
-                fontFamily: fonts.RobotoBold,
+                flexDirection: 'row',
+                borderRadius: 8,
+                marginTop: hp(1),
+                marginBottom: hp(2),
               }}>
-              Shopping
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setSelectedCategory(1)}
-            style={{
-              backgroundColor:
-                selectedCategory == 0 ? colors.background : colors.primary,
-              width: wp(25),
-              height: hp(8),
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderTopRightRadius: 8,
-              borderBottomRightRadius: 8,
-            }}>
-            <Text
-              style={{
-                color:
-                  selectedCategory == 0 ? colors.textColor : colors.background,
-                fontFamily: fonts.RobotoBold,
-              }}>
-              Bidding
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <TouchableOpacity
+                onPress={() => setSelectedCategory(0)}
+                style={{
+                  backgroundColor:
+                    selectedCategory == 0 ? colors.primary : colors.background,
+                  width: wp(25),
+                  height: hp(8),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderTopLeftRadius: 8,
+                  borderBottomLeftRadius: 8,
+                }}>
+                <Text
+                  style={{
+                    color:
+                      selectedCategory == 0
+                        ? colors.background
+                        : colors.textColor,
+                    fontFamily: fonts.RobotoBold,
+                  }}>
+                  Shopping
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setSelectedCategory(1)}
+                style={{
+                  backgroundColor:
+                    selectedCategory == 0 ? colors.background : colors.primary,
+                  width: wp(25),
+                  height: hp(8),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderTopRightRadius: 8,
+                  borderBottomRightRadius: 8,
+                }}>
+                <Text
+                  style={{
+                    color:
+                      selectedCategory == 0
+                        ? colors.textColor
+                        : colors.background,
+                    fontFamily: fonts.RobotoBold,
+                  }}>
+                  Bidding
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              onChangeText={text => submitHandler(text)}
+              search
+              placeholder={'Search any product or keyword'}
+            />
+            <DataTable style={{width: wp(90)}}>
+              {selectedCategory == 0 ? (
+                <DataTable.Header>
+                  <DataTable.Title>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
+                  </DataTable.Title>
+                  <DataTable.Title>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
+                  </DataTable.Title>
+                  <DataTable.Title numeric>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>PAID</Text>
+                  </DataTable.Title>
+                </DataTable.Header>
+              ) : (
+                <DataTable.Header>
+                  <DataTable.Title>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
+                  </DataTable.Title>
+                  <DataTable.Title>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
+                  </DataTable.Title>
+                  <DataTable.Title numeric>
+                    <Text style={{fontFamily: fonts.RobotoBold}}>OFFER</Text>
+                  </DataTable.Title>
+                </DataTable.Header>
+              )}
 
-        <TextInput
-          onChangeText={text => submitHandler(text)}
-          search
-          placeholder={'Search any product or keyword'}
-        />
-
-        <DataTable style={{width: wp(90)}}>
-          {selectedCategory == 0 ? (
-            <DataTable.Header>
-              <DataTable.Title>
-                <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
-              </DataTable.Title>
-              <DataTable.Title numeric>
-                <Text style={{fontFamily: fonts.RobotoBold}}>PAID</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-          ) : (
-            <DataTable.Header>
-              <DataTable.Title>
-                <Text style={{fontFamily: fonts.RobotoBold}}>PRODUCT</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={{fontFamily: fonts.RobotoBold}}>DATED</Text>
-              </DataTable.Title>
-              <DataTable.Title numeric>
-                <Text style={{fontFamily: fonts.RobotoBold}}>OFFER</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-          )}
-
-          {selectedCategory == 0
-            ? searchShopAnalytics?.map(item => (
-                <DataTable.Row>
-                  <DataTable.Cell>
-                    <Text style={{color: colors.textColor}}>
-                      {item.productName}
-                    </Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text style={{color: colors.textColor, fontSize: wp(3)}}>
-                      {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
-                    </Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text style={{fontFamily: fonts.RobotoBold}}>
-                      {'$' + item.paid}
-                    </Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-              ))
-            : searchBidAnalytics?.map(item => (
-                <DataTable.Row>
-                  <DataTable.Cell>
-                    <Text style={{color: colors.textColor}}>
-                      {item.productName}
-                    </Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text style={{color: colors.textColor, fontSize: wp(3)}}>
-                      {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
-                    </Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text style={{fontFamily: fonts.RobotoBold}}>
-                      {'$' + item.offer}
-                    </Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-              ))}
-        </DataTable>
+              {selectedCategory == 0
+                ? searchShopAnalytics?.map(item => (
+                    <DataTable.Row>
+                      <DataTable.Cell>
+                        <Text style={{color: colors.textColor}}>
+                          {item.productName}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell numeric>
+                        <Text
+                          style={{color: colors.textColor, fontSize: wp(3)}}>
+                          {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell numeric>
+                        <Text style={{fontFamily: fonts.RobotoBold}}>
+                          {'$' + item.paid}
+                        </Text>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  ))
+                : searchBidAnalytics?.map(item => (
+                    <DataTable.Row>
+                      <DataTable.Cell>
+                        <Text style={{color: colors.textColor}}>
+                          {item.productName}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell numeric>
+                        <Text
+                          style={{color: colors.textColor, fontSize: wp(3)}}>
+                          {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell numeric>
+                        <Text style={{fontFamily: fonts.RobotoBold}}>
+                          {'$' + item.offer}
+                        </Text>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  ))}
+            </DataTable>
+          </>
+        )}
       </View>
     </ScrollView>
   );

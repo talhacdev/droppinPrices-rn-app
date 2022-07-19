@@ -4,8 +4,6 @@ import {
   UPDATE_CATEGORIES,
   UPDATE_USER,
 } from '../types';
-import moment from 'moment';
-
 const initialState = {
   // products: [
   //   {
@@ -255,7 +253,7 @@ const initialState = {
   products: [],
   categories: [],
   cart: [],
-  user: [],
+  user: {},
 };
 
 export default function (state = initialState, action) {
@@ -285,7 +283,7 @@ export default function (state = initialState, action) {
       console.log('UPDATE_USER is called: ', action.payload);
       return {
         ...state,
-        user: [...action.payload],
+        user: action.payload,
       };
 
     default:
