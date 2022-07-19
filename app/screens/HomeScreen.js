@@ -97,11 +97,7 @@ function HomeScreen(props) {
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
-          onPressBack={() => {
-            auth()
-              .signOut()
-              .then(() => console.log('User signed out!'));
-          }}
+          onPressBack={() => props.navigation.goBack()}
           onPressDrawer={() => console.log('toggle drawer')}
         />
 

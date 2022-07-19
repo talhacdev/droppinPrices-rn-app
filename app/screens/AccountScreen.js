@@ -124,7 +124,10 @@ function AccountScreen(props) {
             borderBottomLeftRadius: wp(8),
             borderBottomRightRadius: wp(8),
           }}>
-          <Header onPressDrawer={() => console.log('toggle drawer')} />
+          <Header
+            onPressBack={() => props.navigation.goBack()}
+            onPressDrawer={() => console.log('toggle drawer')}
+          />
           <View
             style={{
               justifyContent: 'center',

@@ -149,7 +149,7 @@ function ProductDetailScreen(props) {
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Header
-          onPressBack={() => props.navigation.navigate(routes.HOME)}
+          onPressBack={() => props.navigation.goBack()}
           onPressDrawer={() => console.log('toggle drawer')}
         />
 
