@@ -12,4 +12,5 @@ export default Object.freeze({
   PRODUCTS: 'Products',
   BIDS: 'Bids',
   PRODUCT_DETAIL: 'ProductDetail',
+  ACCOUNT: 'Account',
 });

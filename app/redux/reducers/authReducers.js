@@ -225,6 +225,10 @@ const initialState = {
     },
   ],
   user: {
+    name: 'Default User',
+    location: 'Islamabad',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/user.png?alt=media&token=ed9ffad8-62ca-4862-ada9-eb3ecf16eaf9',
     analytics: [
       {
         id: 0,

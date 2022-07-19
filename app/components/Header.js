@@ -18,7 +18,7 @@ function Header(props) {
         padding: hp(2),
       }}>
       <HeaderButton chevronBack onPress={props.onPressBack} />
-      <HeaderButton drawer onPress={props.onPressDrawer} />
+      {/* <HeaderButton drawer onPress={props.onPressDrawer} /> */}
     </View>
   );
 }

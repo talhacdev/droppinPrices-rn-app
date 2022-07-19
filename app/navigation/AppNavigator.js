@@ -9,7 +9,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeNavigator from './HomeNavigator';
 import SearchNavigator from './SearchNavigator';
 import CartNavigator from './CartNavigator';
-import AnalyticsNavigator from './AnalyticsNavigator';
+import AccountNavigator from './AccountNavigator';
 import LikedNavigator from './LikedNavigator';
 
 import images from '../config/images';
@@ -85,7 +85,7 @@ const AppNavigator = props => {
         component={CartNavigator}
       />
       <Tab.Screen
-        name="AnalyticsNavigator"
+        name="AccountNavigator"
         options={{
           tabBarIcon: ({focused}) => (
             <Image
@@ -96,7 +96,7 @@ const AppNavigator = props => {
             />
           ),
         }}
-        component={AnalyticsNavigator}
+        component={AccountNavigator}
       />
       <Tab.Screen
         name="LikedNavigator"

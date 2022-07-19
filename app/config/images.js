@@ -25,4 +25,5 @@ export default {
   facebook: require('../assets/images/facebook.png'),
   instagram: require('../assets/images/instagram.png'),
   youtube: require('../assets/images/youtube.png'),
+  location: require('../assets/images/location.png'),
 };
