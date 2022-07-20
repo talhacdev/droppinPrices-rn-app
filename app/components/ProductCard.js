@@ -283,7 +283,7 @@ function ProductCard(props) {
                     color: colors.quickBid,
                     fontSize: wp(3),
                   }}>
-                  {'QUICK BID '}
+                  {'QUICK BID'}
                 </Text>
               </TouchableOpacity>
               <Text

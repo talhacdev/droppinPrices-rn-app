@@ -148,7 +148,12 @@ function UploadProductScreen(props) {
 
   const createProduct = imageArray => {
     let productObject = {
-      auctionId: '',
+      auctionId:
+        selectedType == 0
+          ? ''
+          : moment()
+              .format('HHMMSS' + Math.random() * (1 - 0) + 0)
+              .replace(/[^0-9]/g, ''),
       bid: selectedType == 0 ? false : true,
       bids: [],
       category: selectedCategory,

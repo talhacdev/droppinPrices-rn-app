@@ -12,6 +12,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 import Header from '../components/Header';
 import TextInput from '../components/TextInput';
@@ -24,6 +27,7 @@ import colors from '../config/colors';
 
 import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
+import routes from '../navigation/routes';
 
 function CartScreen(props) {
   const [cart, setCart] = useState([]);
@@ -49,13 +53,40 @@ function CartScreen(props) {
   };
 
   const onPressCheckOut = () => {
-    alert('not available yet');
+    if (cart.length > 0) {
+      createOrder();
+    }
+  };
+
+  const createOrder = () => {
+    let orderObject = {
+      id: moment()
+        .format('HHMMSS' + Math.random() * (1 - 0) + 0)
+        .replace(/[^0-9]/g, ''),
+      uid: auth()._user.uid,
+      cart,
+      totalPrice: totalPrice.toString(),
+    };
+
+    firestore()
+      .collection('Orders')
+      .doc(orderObject.id)
+      .set(orderObject)
+      .then(() => {
+        alert('Order added!');
+        props.navigation.navigate(routes.HOME);
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   const sumCart = () => {
     cart.forEach(item => {
-      totalPrice += item.price;
+      totalPrice += parseInt(item.price);
+      console.log('totalPrice: ', totalPrice);
     });
+
     return totalPrice;
   };
 
