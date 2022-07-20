@@ -168,7 +168,7 @@ function UploadProductScreen(props) {
       originalPrice,
       price,
       productName,
-      timestamp: moment().format('DD-MM-YYYY hh:mm:ss'),
+      timestamp: moment(new Date()),
     };
 
     firestore()

@@ -123,7 +123,7 @@ function ProductDetailScreen(props) {
 
   const calculateCountdown = item => {
     let now = moment(new Date());
-    let timestamp = moment().toDate(item.timestamp);
+    var timestamp = moment(item.timestamp);
     let duration = moment.duration(now.diff(timestamp));
     let seconds = duration.asSeconds();
     let secondsLeft = 604800 - seconds;

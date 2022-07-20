@@ -5,6 +5,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import moment from 'moment';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import routes from '../navigation/routes';
 
@@ -78,7 +80,7 @@ function BidsScreen(props) {
   const calculateCountdown = item => {
     let now = moment(new Date());
     console.log('item timestamp: ', item);
-    let timestamp = moment().toDate(item.timestamp);
+    var timestamp = moment(item.timestamp);
     let duration = moment.duration(now.diff(timestamp));
     let seconds = duration.asSeconds();
     let secondsLeft = 604800 - seconds;
@@ -94,7 +96,32 @@ function BidsScreen(props) {
   };
 
   const onPressQuickBid = item => {
-    alert('not available yet');
+    if (item.price > 0) {
+      quickBid(item);
+    }
+  };
+
+  const quickBid = item => {
+    let bidObject = {
+      id: moment()
+        .format('HHMMSS' + Math.random() * (1 - 0) + 0)
+        .replace(/[^0-9]/g, ''),
+      uid: auth()._user.uid,
+      item,
+      bidAmount: item.price,
+    };
+
+    firestore()
+      .collection('Bids')
+      .doc(bidObject.id)
+      .set(bidObject)
+      .then(() => {
+        alert('Bid added!');
+        props.navigation.navigate(routes.HOME);
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   return (

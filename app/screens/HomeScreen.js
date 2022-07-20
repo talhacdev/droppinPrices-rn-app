@@ -32,21 +32,23 @@ function HomeScreen(props) {
   const [productsToBuy, setProductsToBuy] = useState([]);
   const [productsToBid, setProductsToBid] = useState([]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     turnToAuction();
-  //   }, 60000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // fetch();
+      turnToAuction();
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
-    fetch();
+    const interval = setInterval(() => {
+      fetch();
+    }, 12000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetch = async () => {
     let loggedInUserId = auth()._user.uid;
-
-    console.log('loggedInUserId: ', loggedInUserId);
 
     await firestore()
       .collection('Products')
@@ -135,13 +137,79 @@ function HomeScreen(props) {
     for (let i = 0; i < reduxProducts.length; i++) {
       if (reduxProducts[i].bid == false) {
         var now = moment(new Date());
-        var timestamp = reduxProducts[i].timestamp;
+        var timestamp = moment(reduxProducts[i].timestamp);
         var duration = moment.duration(now.diff(timestamp));
         var hours = duration.asHours();
-        if (hours > 0.3) {
-          reduxProducts[i].auctionId = moment();
+        if (hours > 360) {
+          reduxProducts[i].auctionId = moment().format(
+            'HHMMSS' + Math.random() * (1 - 0) + 0,
+          );
           reduxProducts[i].bid = true;
-          props.updateProducts([...reduxProducts]);
+          (reduxProducts[i].timestamp = moment(new Date())),
+            props.updateProducts([...reduxProducts]);
+        } else if (hours > 336) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 90) {
+            let price = (10 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 312) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 80) {
+            let price = (20 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 288) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 70) {
+            let price = (30 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 240) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 60) {
+            let price = (40 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 264) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 50) {
+            let price = (50 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 240) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 40) {
+            let price = (60 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 216) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 30) {
+            let price = (70 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 192) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 20) {
+            let price = (80 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
+        } else if (hours > 168) {
+          let discount = calculateDiscount(reduxProducts[i]);
+          if (discount < 10) {
+            let price = (90 * reduxProducts[i].originalPrice) / 100;
+            reduxProducts[i].price = price;
+            props.updateProducts([...reduxProducts]);
+          }
         }
       }
     }
