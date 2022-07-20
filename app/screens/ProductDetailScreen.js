@@ -33,7 +33,6 @@ import {connect} from 'react-redux';
 import {UpdateCart, UpdateProducts} from '../redux/actions/AuthActions';
 
 function ProductDetailScreen(props) {
-  const [product, setProduct] = useState({});
   const [products, setProducts] = useState({});
   const [bidSet, setBidSet] = useState('');
   const [category, setCategory] = useState({});
@@ -46,21 +45,11 @@ function ProductDetailScreen(props) {
     let reduxProducts = props.productsValue;
     let reduxCategories = props.categoriesValue;
 
-    let tempProduct = reduxProducts.filter(i => i.id === item.id);
     let tempCategory = reduxCategories.filter(i => i.id === item.category);
 
-    setProduct(tempProduct[0]);
     setProducts(reduxProducts);
     setCategory(tempCategory[0]);
   }, [props.productsValue]);
-
-  useEffect(() => {
-    const item = props.route.params.item;
-    let reduxProducts = props.productsValue;
-    let tempProduct = reduxProducts.filter(i => i.id === item.id);
-    setProduct(tempProduct[0]);
-    setProducts(reduxProducts);
-  });
 
   const onPressButton = item => {
     if (item.bid) {
@@ -74,6 +63,7 @@ function ProductDetailScreen(props) {
     let tempArray = products;
     let index = tempArray.indexOf(item);
     tempArray[index].liked = !item.liked;
+
     props.updateProducts([...products]);
   };
 
@@ -108,7 +98,7 @@ function ProductDetailScreen(props) {
 
   const calculateCountdown = item => {
     let now = moment(new Date());
-    let timestamp = item.timestamp;
+    let timestamp = moment().toDate(item.timestamp);
     let duration = moment.duration(now.diff(timestamp));
     let seconds = duration.asSeconds();
     let secondsLeft = 604800 - seconds;
@@ -181,7 +171,7 @@ function ProductDetailScreen(props) {
                 height: hp(50),
                 resizeMode: 'contain',
               }}
-              source={{uri: product.image}}
+              source={{uri: props.route.params.item.image[0]}}
             />
           </View>
           <View style={{flexDirection: 'row'}}>
@@ -196,7 +186,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={{uri: product.image}}
+                source={{uri: props.route.params.item.image[1]}}
               />
             </View>
             <View style={{borderRadius: wp(8), marginHorizontal: wp(2)}}>
@@ -206,7 +196,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={{uri: product.image}}
+                source={{uri: props.route.params.item.image[2]}}
               />
             </View>
             <View style={{borderRadius: wp(8), marginHorizontal: wp(2)}}>
@@ -216,7 +206,7 @@ function ProductDetailScreen(props) {
                   height: hp(15),
                   resizeMode: 'contain',
                 }}
-                source={{uri: product.image}}
+                source={{uri: props.route.params.item.image[3]}}
               />
             </View>
           </View>
@@ -240,11 +230,11 @@ function ProductDetailScreen(props) {
                 fontSize: wp(3.5),
                 color: colors.textColor,
               }}>
-              {product.productName}
+              {props.route.params.item.productName}
             </Text>
           </View>
 
-          {product?.bids?.length >= 1 && (
+          {props.route.params.item?.bids?.length >= 1 && (
             <View
               style={{
                 borderRadius: wp(2),
@@ -270,7 +260,7 @@ function ProductDetailScreen(props) {
                     color: colors.textColor,
                     fontFamily: fonts.RobotoBold,
                   }}>
-                  {'$' + calculateHighestBid(product)}
+                  {'$' + calculateHighestBid(props.route.params.item)}
                 </Text>
               </View>
               <View
@@ -292,7 +282,7 @@ function ProductDetailScreen(props) {
                     color: colors.textColor,
                     fontFamily: fonts.RobotoBold,
                   }}>
-                  {'$' + calculateLowestBid(product)}
+                  {'$' + calculateLowestBid(props.route.params.item)}
                 </Text>
               </View>
             </View>
@@ -300,21 +290,26 @@ function ProductDetailScreen(props) {
 
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Button
-              onPress={() => onPressButton(product)}
+              onPress={() => onPressButton(props.route.params.item)}
               backgroundColor={colors.primary}
               fontSize={wp(3.5)}
               height={hp(8)}
               borderRadius={wp(2)}
-              title={product.bid ? calculateQuickBid(product) : 'ADD TO CART'}
+              title={
+                props.route.params.item.bid
+                  ? calculateQuickBid(props.route.params.item)
+                  : 'ADD TO CART'
+              }
             />
 
-            {product.bid && (
+            {props.route.params.item.bid && (
               <View style={styles.center}>
                 <TextInput
                   bid
                   borderRadius={wp(2)}
                   promoCode
                   placeholder={' '}
+                  defaultValue={bidSet}
                   onPress={() => onPressSubmitYourBid()}
                   onChangeText={text => setBidSet(text)}
                 />
@@ -389,12 +384,12 @@ function ProductDetailScreen(props) {
                 fontSize: wp(3.5),
                 color: colors.textColor,
               }}>
-              {product.description}
+              {props.route.params.item.description}
             </Text>
           </View>
         </View>
 
-        {product?.bids?.length >= 1 && (
+        {props.route.params.item?.bids?.length >= 1 && (
           <DataTable style={{width: wp(90), paddingBottom: hp(4)}}>
             <View>
               <Text
@@ -422,17 +417,17 @@ function ProductDetailScreen(props) {
               </DataTable.Title>
             </DataTable.Header>
 
-            {product.bids.map(item => (
+            {props.route.params.item?.bids.map(item => (
               <DataTable.Row>
                 <DataTable.Cell style={{width: wp('33%')}}>
                   <Text style={{color: colors.textColor}}>
-                    {'$' + item.bidAmount}
+                    {'$' + item?.bidAmount}
                   </Text>
                 </DataTable.Cell>
 
                 <DataTable.Cell numeric style={{width: wp('33%')}}>
                   <Text style={{color: colors.textColor}}>
-                    {'$' + calculateHighestBid(product)}
+                    {'$' + calculateHighestBid(props.route.params.item)}
                   </Text>
                 </DataTable.Cell>
 
@@ -469,7 +464,7 @@ function ProductDetailScreen(props) {
                   productName={item.productName}
                   price={item.price}
                   originalPrice={item.originalPrice}
-                  image={item.image}
+                  image={item.image[0]}
                   discount={calculateDiscount(item)}
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}

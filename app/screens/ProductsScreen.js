@@ -114,7 +114,7 @@ function ProductsScreen(props) {
                   productName={item.productName}
                   price={item.price}
                   originalPrice={item.originalPrice}
-                  image={item.image}
+                  image={item.image[0]}
                   discount={calculateDiscount(item)}
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}

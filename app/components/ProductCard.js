@@ -11,7 +11,7 @@ import fonts from '../config/fonts';
 import colors from '../config/colors';
 
 function ProductCard(props) {
-  if (!props?.auctionId) {
+  if (!props?.bid) {
     return (
       <TouchableOpacity onPress={props.onPress}>
         <View
@@ -138,7 +138,7 @@ function ProductCard(props) {
     );
   }
 
-  if (props?.auctionId) {
+  if (props?.bid) {
     return (
       <TouchableOpacity onPress={props.onPress}>
         <View

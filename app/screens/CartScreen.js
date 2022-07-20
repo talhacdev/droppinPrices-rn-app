@@ -159,7 +159,7 @@ function CartScreen(props) {
                         onPress={() => console.log('card pressed')}
                         productName={item.productName}
                         price={item.price}
-                        image={item.image}
+                        image={item.image[0]}
                         category={item.category}
                         onPressRemove={() => onPressRemove(item)}
                       />

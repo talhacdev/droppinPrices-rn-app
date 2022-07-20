@@ -150,9 +150,7 @@ function UploadProductScreen(props) {
 
   const createProduct = imageArray => {
     let productObject = {
-      auctionId: moment()
-        .format('HHMMSS' + Math.random() * (1 - 0) + 0)
-        .replace(/[^0-9]/g, ''),
+      auctionId: '',
       bid: selectedType == 0 ? false : true,
       bids: [],
       category: selectedCategory,
@@ -166,7 +164,7 @@ function UploadProductScreen(props) {
       originalPrice,
       price,
       productName,
-      timestamp: moment(),
+      timestamp: moment().format('DD-MM-YYYY hh:mm:ss'),
     };
 
     firestore()

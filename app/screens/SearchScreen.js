@@ -101,7 +101,7 @@ function SearchScreen(props) {
 
   const calculateCountdown = item => {
     let now = moment(new Date());
-    let timestamp = item.timestamp;
+    let timestamp = moment().toDate(item.timestamp);
     let duration = moment.duration(now.diff(timestamp));
     let seconds = duration.asSeconds();
     let secondsLeft = 604800 - seconds;
@@ -168,7 +168,7 @@ function SearchScreen(props) {
                   productName={item.productName}
                   price={item.price}
                   originalPrice={item.originalPrice}
-                  image={item.image}
+                  image={item.image[0]}
                   discount={calculateDiscount(item)}
                   liked={item.liked}
                   minimumPrice={item.minimumPrice}
