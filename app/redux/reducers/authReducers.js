@@ -4,6 +4,8 @@ import {
   UPDATE_CATEGORIES,
   UPDATE_USER,
 } from '../types';
+import {categories as CATEGORIES} from '../../config/config';
+
 const initialState = {
   // products: [
   //   {
@@ -205,28 +207,7 @@ const initialState = {
   //     description: 'Beer Beer Beer Beer Beer Beer Beer Beer Beer Beer.',
   //   },
   // ],
-  categories: [
-    {
-      id: 0,
-      categoryName: 'All',
-    },
-    {
-      id: 1,
-      categoryName: 'Electronic',
-    },
-    {
-      id: 2,
-      categoryName: 'Tech',
-    },
-    {
-      id: 3,
-      categoryName: 'Sports',
-    },
-    {
-      id: 4,
-      categoryName: 'Food',
-    },
-  ],
+  categories: CATEGORIES,
   // user: {
   //   name: 'Default User',
   //   location: 'Islamabad',
