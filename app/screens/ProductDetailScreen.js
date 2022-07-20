@@ -14,6 +14,8 @@ import {
 } from 'react-native-responsive-screen';
 import {DataTable} from 'react-native-paper';
 import moment from 'moment';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import routes from '../navigation/routes';
 
@@ -53,7 +55,7 @@ function ProductDetailScreen(props) {
 
   const onPressButton = item => {
     if (item.bid) {
-      onPressQuickBid();
+      onPressQuickBid(item);
     } else {
       onPressAddToCart(item);
     }
@@ -116,12 +118,42 @@ function ProductDetailScreen(props) {
     return dDisplay + hDisplay + mDisplay + sDisplay;
   };
 
-  const onPressSubmitYourBid = () => {
-    onPressQuickBid();
+  const onPressSubmitYourBid = item => {
+    if (parseFloat(bidSet) >= parseFloat(item.minimumPrice)) {
+      console.log('bidSet: ', item.minimumPrice);
+      createBid(item);
+    } else {
+      alert('Bid > Minimum price');
+    }
   };
 
-  const onPressQuickBid = () => {
-    alert('not available yet');
+  const onPressQuickBid = item => {
+    if (bidSet > item.minimumPrice) {
+      createBid();
+    }
+  };
+
+  const createBid = item => {
+    let bidObject = {
+      id: moment()
+        .format('HHMMSS' + Math.random() * (1 - 0) + 0)
+        .replace(/[^0-9]/g, ''),
+      uid: auth()._user.uid,
+      item,
+      bidAmount: bidSet,
+    };
+
+    firestore()
+      .collection('Bids')
+      .doc(bidObject.id)
+      .set(bidObject)
+      .then(() => {
+        alert('Bid added!');
+        props.navigation.navigate(routes.HOME);
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   const onPressCard = item => {
@@ -307,7 +339,8 @@ function ProductDetailScreen(props) {
                   promoCode
                   placeholder={' '}
                   defaultValue={bidSet}
-                  onPress={() => onPressSubmitYourBid()}
+                  keyboardType={'numeric'}
+                  onPress={() => onPressSubmitYourBid(props.route.params.item)}
                   onChangeText={text => setBidSet(text)}
                 />
               </View>

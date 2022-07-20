@@ -3,6 +3,8 @@ import {
   UPDATE_CART,
   UPDATE_CATEGORIES,
   UPDATE_USER,
+  UPDATE_BIDS,
+  UPDATE_ORDERS,
 } from '../types';
 import {categories as CATEGORIES} from '../../config/config';
 
@@ -208,32 +210,11 @@ const initialState = {
   //   },
   // ],
   categories: CATEGORIES,
-  // user: {
-  //   name: 'Default User',
-  //   location: 'Islamabad',
-  //   image:
-  //     'https://firebasestorage.googleapis.com/v0/b/droppinprices.appspot.com/o/user.png?alt=media&token=ed9ffad8-62ca-4862-ada9-eb3ecf16eaf9',
-  //   analytics: [
-  //     {
-  //       id: 0,
-  //       bid: false,
-  //       productName: 'silver bag gucci',
-  //       time: moment(),
-  //       paid: 500,
-  //     },
-  //     {
-  //       id: 0,
-  //       bid: true,
-  //       productName: 'gucci bag gold',
-  //       time: moment(),
-  //       offer: 500,
-  //     },
-  //   ],
-  // },
-
   products: [],
   // categories: [],
   cart: [],
+  orders: [],
+  bids: [],
   user: {},
 };
 
@@ -265,6 +246,20 @@ export default function (state = initialState, action) {
       return {
         ...state,
         user: action.payload,
+      };
+
+    case UPDATE_ORDERS:
+      console.log('UPDATE_ORDERS is called: ', action.payload);
+      return {
+        ...state,
+        orders: [...action.payload],
+      };
+
+    case UPDATE_BIDS:
+      console.log('UPDATE_BIDS is called: ', action.payload);
+      return {
+        ...state,
+        bids: [...action.payload],
       };
 
     default:

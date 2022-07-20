@@ -31,29 +31,31 @@ function AnalyticsScreen(props) {
   const [searchBidAnalytics, setSearchBidAnalytics] = useState([]);
 
   useEffect(() => {
-    let reduxUser = props.userValue;
-
-    let tempShopAnalytics = reduxUser.analytics.filter(i => i.bid == false);
-    let tempBidAnalytics = reduxUser.analytics.filter(i => i.bid == true);
+    let tempShopAnalytics = props.ordersValue;
+    let tempBidAnalytics = props.bidsValue;
 
     setShopAnalytics(tempShopAnalytics);
     setBidAnalytics(tempBidAnalytics);
     setSearchShopAnalytics(tempShopAnalytics);
     setSearchBidAnalytics(tempBidAnalytics);
-  }, [props.userValue]);
+  }, [props.ordersValue, props.bidsValue]);
 
   const submitHandler = val => {
     if (val) {
-      let reduxUser = props.userValue;
-      let tempAnalytics = reduxUser.analytics?.filter(m =>
-        m?.productName?.toLowerCase().includes(val?.toLowerCase()),
-      );
+      if (selectedCategory == 0) {
+        let tempAnalytics = props.ordersValue.filter(({cart}) =>
+          cart.some(({productName}) =>
+            productName?.toLowerCase().includes(val?.toLowerCase()),
+          ),
+        );
 
-      let tempShopAnalytics = tempAnalytics.filter(i => i.bid == false);
-      let tempBidAnalytics = tempAnalytics.filter(i => i.bid == true);
-
-      setSearchShopAnalytics(tempShopAnalytics);
-      setSearchBidAnalytics(tempBidAnalytics);
+        setSearchShopAnalytics(tempAnalytics);
+      } else {
+        let tempAnalytics = props.bidsValue?.filter(m =>
+          m?.item?.productName?.toLowerCase().includes(val?.toLowerCase()),
+        );
+        setSearchBidAnalytics(tempAnalytics);
+      }
     } else {
       setSearchShopAnalytics(shopAnalytics);
       setSearchBidAnalytics(bidAnalytics);
@@ -172,18 +174,18 @@ function AnalyticsScreen(props) {
                     <DataTable.Row>
                       <DataTable.Cell>
                         <Text style={{color: colors.textColor}}>
-                          {item.productName}
+                          {item?.cart[0]?.productName}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell numeric>
                         <Text
                           style={{color: colors.textColor, fontSize: wp(3)}}>
-                          {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
+                          {moment(item?.time).format('DD-MM-YYYY HH:mm:ss')}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell numeric>
                         <Text style={{fontFamily: fonts.RobotoBold}}>
-                          {'$' + item.paid}
+                          {'$' + item?.totalPrice}
                         </Text>
                       </DataTable.Cell>
                     </DataTable.Row>
@@ -192,18 +194,18 @@ function AnalyticsScreen(props) {
                     <DataTable.Row>
                       <DataTable.Cell>
                         <Text style={{color: colors.textColor}}>
-                          {item.productName}
+                          {item?.item?.productName}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell numeric>
                         <Text
                           style={{color: colors.textColor, fontSize: wp(3)}}>
-                          {moment(item.time).format('DD-MM-YYYY HH:mm:ss')}
+                          {moment(item?.time).format('DD-MM-YYYY HH:mm:ss')}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell numeric>
                         <Text style={{fontFamily: fonts.RobotoBold}}>
-                          {'$' + item.offer}
+                          {'$' + item?.bidAmount}
                         </Text>
                       </DataTable.Cell>
                     </DataTable.Row>
@@ -233,6 +235,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     userValue: state.auth.user,
+    bidsValue: state.auth.bids,
+    ordersValue: state.auth.orders,
   };
 }
 

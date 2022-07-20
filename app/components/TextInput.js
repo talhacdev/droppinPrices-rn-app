@@ -32,6 +32,7 @@ function AppTextInput(props) {
           defaultValue={props.defaultValue}
           secureTextEntry={props.secureTextEntry}
           onChangeText={props.onChangeText}
+          keyboardType={props.keyboardType}
           style={{
             width: props?.bid ? '58%' : '75%',
             fontFamily: fonts.RobotoRegular,
@@ -45,6 +46,7 @@ function AppTextInput(props) {
         />
 
         <TouchableOpacity
+          disabled={props.disabled}
           onPress={props.onPress}
           style={{
             backgroundColor: colors.primary,

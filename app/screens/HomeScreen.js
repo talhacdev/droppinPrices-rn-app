@@ -23,6 +23,8 @@ import {
   UpdateCategories,
   UpdateProducts,
   UpdateUser,
+  UpdateOrders,
+  UpdateBids,
 } from '../redux/actions/AuthActions';
 
 function HomeScreen(props) {
@@ -42,6 +44,10 @@ function HomeScreen(props) {
   }, []);
 
   const fetch = async () => {
+    let loggedInUserId = auth()._user.uid;
+
+    console.log('loggedInUserId: ', loggedInUserId);
+
     await firestore()
       .collection('Products')
       .get()
@@ -58,6 +64,39 @@ function HomeScreen(props) {
       })
       .catch(error => alert('products: ', error));
 
+    await firestore()
+      .collection('Orders')
+      .where('uid', '==', loggedInUserId)
+      .get()
+      .then(res => {
+        console.log('res: ', res.docs);
+        if (res.docs) {
+          let response = res.docs;
+          let array = [];
+          for (let i = 0; i < response.length; i++) {
+            array.push(response[i]._data);
+          }
+          props.updateOrders(array);
+        }
+      })
+      .catch(error => alert(error));
+
+    await firestore()
+      .collection('Bids')
+      .where('uid', '==', loggedInUserId)
+      .get()
+      .then(res => {
+        if (res.docs) {
+          let response = res.docs;
+          let array = [];
+          for (let i = 0; i < response.length; i++) {
+            array.push(response[i]._data);
+          }
+          props.updateBids(array);
+        }
+      })
+      .catch(error => alert('users: ', error));
+
     // await firestore()
     //   .collection('categories')
     //   .get()
@@ -66,8 +105,6 @@ function HomeScreen(props) {
     //     props.updateCategories([...res.docs._data.categories]);
     //   })
     //   .catch(error => alert('categories: ', error));
-
-    let loggedInUserId = auth()._user.uid;
 
     await firestore()
       .collection('Users')
@@ -229,6 +266,8 @@ function mapDispatchToProps(dispatch) {
     updateCart: payload => dispatch(UpdateCart(payload)),
     updateCategories: payload => dispatch(UpdateCategories(payload)),
     updateUser: payload => dispatch(UpdateUser(payload)),
+    updateOrders: payload => dispatch(UpdateOrders(payload)),
+    updateBids: payload => dispatch(UpdateBids(payload)),
   };
 }
 
