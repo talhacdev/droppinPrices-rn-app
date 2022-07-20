@@ -66,7 +66,7 @@ function AppTextInput(props) {
         style={{
           flexDirection: 'row',
           width: props.search ? wp(90) : wp(80),
-          height: hp(7),
+          height: props.multiline ? hp(14) : hp(7),
           borderRadius: wp(5),
           marginVertical: hp(1),
           justifyContent: 'center',
@@ -81,6 +81,8 @@ function AppTextInput(props) {
           defaultValue={props.defaultValue}
           secureTextEntry={props.secureTextEntry}
           onChangeText={props.onChangeText}
+          multiline={props.multiline}
+          keyboardType={props.keyboardType}
           style={{
             width: props.search ? '85%' : '90%',
             fontFamily: fonts.RobotoRegular,

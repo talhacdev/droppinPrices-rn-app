@@ -42,14 +42,21 @@ function HomeScreen(props) {
   }, []);
 
   const fetch = async () => {
-    // await firestore()
-    //   .collection('products')
-    //   .get()
-    //   .then(res => {
-    //     console.log('products res: ', res.docs);
-    //     props.updateProducts([...res.docs]);
-    //   })
-    //   .catch(error => alert('products: ', error));
+    await firestore()
+      .collection('Products')
+      .get()
+      .then(res => {
+        console.log('products res: ', res.docs);
+        if (res.docs) {
+          let response = res.docs;
+          let array = [];
+          for (let i = 0; i < response.length; i++) {
+            array.push(response[i]._data);
+          }
+          props.updateProducts(array);
+        }
+      })
+      .catch(error => alert('products: ', error));
 
     // await firestore()
     //   .collection('categories')

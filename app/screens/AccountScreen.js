@@ -26,7 +26,7 @@ import {connect} from 'react-redux';
 
 function AccountScreen(props) {
   const onPressUploadProducts = () => {
-    console.log('onPressUploadProducts');
+    props.navigation.navigate(routes.UPLOAD_PRODUCT);
   };
 
   const onPressLogout = () => {

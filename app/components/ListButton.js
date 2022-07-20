@@ -8,7 +8,7 @@ import {
 import fonts from '../config/fonts';
 import colors from '../config/colors';
 
-function CategoryCard(props) {
+function ListButton(props) {
   return (
     <TouchableOpacity
       disabled={props.disabled}
@@ -29,10 +29,10 @@ function CategoryCard(props) {
           opacity: props.selected ? 1 : 0.5,
           fontSize: wp(3),
         }}>
-        {props?.item?.categoryName}
+        {props?.item?.title}
       </Text>
     </TouchableOpacity>
   );
 }
 
-export default CategoryCard;
+export default ListButton;
