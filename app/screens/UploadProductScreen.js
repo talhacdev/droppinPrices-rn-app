@@ -29,6 +29,8 @@ import ListButton from '../components/ListButton';
 
 import colors from '../config/colors';
 
+import {types as TYPES} from '../config/config';
+
 import {connect} from 'react-redux';
 import {
   UpdateCart,
@@ -62,11 +64,7 @@ function UploadProductScreen(props) {
     let filteredCategories = reduxCategories.filter(i => i.id !== 0);
     setCategories(filteredCategories);
 
-    let typeJSON = [
-      {id: 0, title: 'for sale'},
-      {id: 1, title: 'bid'},
-    ];
-    setType(typeJSON);
+    setType(TYPES);
   }, [props.categoriesValue]);
 
   const onPressImage = id => {
@@ -205,7 +203,7 @@ function UploadProductScreen(props) {
                         height: wp(25),
                         marginVertical: hp(1),
                         marginHorizontal: wp(1),
-                        backgroundColor: colors.search,
+                        backgroundColor: colors.textInput,
                       }}
                     />
                   )}
@@ -228,7 +226,7 @@ function UploadProductScreen(props) {
                         height: wp(25),
                         marginVertical: hp(1),
                         marginHorizontal: wp(1),
-                        backgroundColor: colors.search,
+                        backgroundColor: colors.textInput,
                       }}
                     />
                   )}
@@ -253,7 +251,7 @@ function UploadProductScreen(props) {
                         height: wp(25),
                         marginVertical: hp(1),
                         marginHorizontal: wp(1),
-                        backgroundColor: colors.search,
+                        backgroundColor: colors.textInput,
                       }}
                     />
                   )}
@@ -276,7 +274,7 @@ function UploadProductScreen(props) {
                         height: wp(25),
                         marginVertical: hp(1),
                         marginHorizontal: wp(1),
-                        backgroundColor: colors.search,
+                        backgroundColor: colors.textInput,
                       }}
                     />
                   )}
