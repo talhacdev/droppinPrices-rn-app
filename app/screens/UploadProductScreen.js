@@ -42,9 +42,6 @@ import fonts from '../config/fonts';
 import images from '../config/images';
 
 function UploadProductScreen(props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [type, setType] = useState([]);
@@ -58,6 +55,7 @@ function UploadProductScreen(props) {
   const [image1, setImage1] = useState();
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
+  const [quantity, setQuantity] = useState('');
 
   useEffect(() => {
     let reduxCategories = props.categoriesValue;
@@ -138,6 +136,7 @@ function UploadProductScreen(props) {
       image3 &&
       productName &&
       description &&
+      quantity &&
       price &&
       minimumPrice &&
       originalPrice
@@ -148,6 +147,7 @@ function UploadProductScreen(props) {
 
   const createProduct = imageArray => {
     let productObject = {
+      active: true,
       auctionId:
         selectedType == 0
           ? ''
@@ -158,6 +158,7 @@ function UploadProductScreen(props) {
       bids: [],
       category: selectedCategory,
       description,
+      quantity,
       id: moment()
         .format('HHMMSS' + Math.random() * (1 - 0) + 0)
         .replace(/[^0-9]/g, ''),
@@ -348,6 +349,13 @@ function UploadProductScreen(props) {
             multiline
           />
           <TextInput
+            onChangeText={text => setQuantity(text)}
+            defaultValue={quantity}
+            placeholder={'Quantity'}
+            keyboardType={'numeric'}
+          />
+
+          <TextInput
             onChangeText={text => setPrice(text)}
             defaultValue={price}
             placeholder={'Price'}
@@ -368,17 +376,18 @@ function UploadProductScreen(props) {
 
           <View style={styles.buttonContainer}>
             <Button
-              // disabled={
-              //   image ||
-              //   image1 ||
-              //   image2 ||
-              //   image3 ||
-              //   productName ||
-              //   description ||
-              //   price ||
-              //   minimumPrice ||
-              //   originalPrice
-              // }
+              disabled={
+                !image &&
+                !image1 &&
+                !image2 &&
+                !image3 &&
+                !productName &&
+                !description &&
+                !quantity &&
+                !price &&
+                !minimumPrice &&
+                !originalPrice
+              }
               onPress={() => onPressUpload()}
               title={'Upload'}
             />
@@ -391,7 +400,6 @@ function UploadProductScreen(props) {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
     backgroundColor: colors.background,
   },
   container: {

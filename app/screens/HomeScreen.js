@@ -52,14 +52,14 @@ function HomeScreen(props) {
       .collection('Products')
       .get()
       .then(res => {
-        console.log('products res: ', res.docs);
         if (res.docs) {
           let response = res.docs;
           let array = [];
           for (let i = 0; i < response.length; i++) {
             array.push(response[i]._data);
           }
-          props.updateProducts(array);
+          let activeProducts = array.filter(i => i.active == true);
+          props.updateProducts(activeProducts);
         }
       })
       .catch(error => alert('products: ', error));
@@ -69,7 +69,6 @@ function HomeScreen(props) {
       .where('uid', '==', loggedInUserId)
       .get()
       .then(res => {
-        console.log('res: ', res.docs);
         if (res.docs) {
           let response = res.docs;
           let array = [];

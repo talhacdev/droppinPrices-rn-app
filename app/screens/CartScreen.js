@@ -74,11 +74,28 @@ function CartScreen(props) {
       .set(orderObject)
       .then(() => {
         alert('Order added!');
-        props.navigation.navigate(routes.HOME);
       })
       .catch(err => {
         alert(err);
       });
+
+    for (let i = 0; i < cart.length; i++) {
+      firestore()
+        .collection('Products')
+        .doc(cart[i].id)
+        .update({
+          active: false,
+        })
+        .then(() => {
+          // alert('Database maintained!');
+          props.navigation.navigate(routes.HOME);
+        })
+        .catch(err => {
+          alert(err);
+        });
+    }
+
+    onPressClose();
   };
 
   const sumCart = () => {
