@@ -88,10 +88,7 @@ function ProductsScreen(props) {
   return (
     <ScrollView style={styles.screen} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Header
-          onPressBack={() => props.navigation.goBack()}
-          onPressDrawer={() => console.log('toggle drawer')}
-        />
+        <Header onPressBack={() => props.navigation.goBack()} />
 
         <Slider
           low={low}
