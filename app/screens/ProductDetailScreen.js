@@ -38,6 +38,7 @@ function ProductDetailScreen(props) {
   const [products, setProducts] = useState({});
   const [bidSet, setBidSet] = useState('');
   const [category, setCategory] = useState({});
+  const [bids, setBids] = useState([]);
 
   const scrollRef = useRef();
 
@@ -51,7 +52,29 @@ function ProductDetailScreen(props) {
 
     setProducts(reduxProducts);
     setCategory(tempCategory[0]);
-  }, [props.productsValue]);
+    fetchBids();
+  }, [props]);
+
+  const fetchBids = async () => {
+    console.log('Fetching: ', props.route.params.item.id);
+    await firestore()
+      .collection('Bids')
+      .get()
+      .then(res => {
+        if (res.docs) {
+          let response = res.docs;
+          let array = [];
+          for (let i = 0; i < response.length; i++) {
+            array.push(response[i]._data);
+          }
+          let tempAnalytics = array?.filter(
+            m => m?.item?.id == props.route.params.item.id,
+          );
+          setBids(tempAnalytics);
+        }
+      })
+      .catch(error => alert(error));
+  };
 
   const onPressButton = item => {
     if (item.bid) {
@@ -91,11 +114,11 @@ function ProductDetailScreen(props) {
   };
 
   const calculateHighestBid = item => {
-    return Math.max(...item.bids.map(o => o.bidAmount));
+    return Math.max(...item.map(o => o.bidAmount));
   };
 
   const calculateLowestBid = item => {
-    return Math.min(...item.bids.map(o => o.bidAmount));
+    return Math.min(...item.map(o => o.bidAmount));
   };
 
   const calculateCountdown = item => {
@@ -128,9 +151,32 @@ function ProductDetailScreen(props) {
   };
 
   const onPressQuickBid = item => {
-    if (bidSet > item.minimumPrice) {
-      createBid();
+    if (item.price > 0) {
+      quickBid(item);
     }
+  };
+
+  const quickBid = item => {
+    let bidObject = {
+      id: moment()
+        .format('HHMMSS' + Math.random() * (1 - 0) + 0)
+        .replace(/[^0-9]/g, ''),
+      uid: auth()._user.uid,
+      item,
+      bidAmount: item.price,
+    };
+
+    firestore()
+      .collection('Bids')
+      .doc(bidObject.id)
+      .set(bidObject)
+      .then(() => {
+        alert('Bid added!');
+        props.navigation.navigate(routes.HOME);
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   const createBid = item => {
@@ -263,7 +309,7 @@ function ProductDetailScreen(props) {
             </Text>
           </View>
 
-          {props.route.params.item?.bids?.length >= 1 && (
+          {bids?.length >= 1 && (
             <View
               style={{
                 borderRadius: wp(2),
@@ -277,7 +323,7 @@ function ProductDetailScreen(props) {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   width: wp(80),
-                  backgroundColor: colors.secondary,
+                  backgroundColor: colors.bids,
                   padding: wp(4),
                   borderTopLeftRadius: wp(2),
                   borderTopEndRadius: wp(2),
@@ -289,7 +335,7 @@ function ProductDetailScreen(props) {
                     color: colors.textColor,
                     fontFamily: fonts.RobotoBold,
                   }}>
-                  {'$' + calculateHighestBid(props.route.params.item)}
+                  {'$' + calculateHighestBid(bids)}
                 </Text>
               </View>
               <View
@@ -298,7 +344,7 @@ function ProductDetailScreen(props) {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   width: wp(80),
-                  backgroundColor: colors.secondary,
+                  backgroundColor: colors.bids,
                   padding: wp(4),
                   borderBottomLeftRadius: wp(2),
                   borderBottomEndRadius: wp(2),
@@ -311,7 +357,7 @@ function ProductDetailScreen(props) {
                     color: colors.textColor,
                     fontFamily: fonts.RobotoBold,
                   }}>
-                  {'$' + calculateLowestBid(props.route.params.item)}
+                  {'$' + calculateLowestBid(bids)}
                 </Text>
               </View>
             </View>
@@ -419,7 +465,7 @@ function ProductDetailScreen(props) {
           </View>
         </View>
 
-        {props.route.params.item?.bids?.length >= 1 && (
+        {bids?.length >= 1 && (
           <DataTable style={{width: wp(90), paddingBottom: hp(4)}}>
             <View>
               <Text
@@ -447,7 +493,7 @@ function ProductDetailScreen(props) {
               </DataTable.Title>
             </DataTable.Header>
 
-            {props.route.params.item?.bids.map(item => (
+            {bids.map(item => (
               <DataTable.Row>
                 <DataTable.Cell style={{width: wp('33%')}}>
                   <Text style={{color: colors.textColor}}>
@@ -457,7 +503,7 @@ function ProductDetailScreen(props) {
 
                 <DataTable.Cell numeric style={{width: wp('33%')}}>
                   <Text style={{color: colors.textColor}}>
-                    {'$' + calculateHighestBid(props.route.params.item)}
+                    {'$' + calculateHighestBid(bids)}
                   </Text>
                 </DataTable.Cell>
 

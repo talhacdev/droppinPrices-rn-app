@@ -13,4 +13,5 @@ export default {
   quickBid: '#2081E2',
   error: '#FF0000A6',
   checkout: '#F5F5F6',
+  bids: '#FFEDE1',
 };

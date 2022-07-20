@@ -48,7 +48,6 @@ function AnalyticsScreen(props) {
             productName?.toLowerCase().includes(val?.toLowerCase()),
           ),
         );
-
         setSearchShopAnalytics(tempAnalytics);
       } else {
         let tempAnalytics = props.bidsValue?.filter(m =>
