@@ -53,9 +53,10 @@ function CartScreen(props) {
   };
 
   const onPressCheckOut = () => {
-    if (cart.length > 0) {
-      createOrder();
-    }
+    // if (cart.length > 0) {
+    //   createOrder();
+    // }
+    props.navigation.navigate(routes.STRIPE);
   };
 
   const createOrder = () => {

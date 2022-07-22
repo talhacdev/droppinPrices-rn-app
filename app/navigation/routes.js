@@ -14,4 +14,5 @@ export default Object.freeze({
   PRODUCT_DETAIL: 'ProductDetail',
   ACCOUNT: 'Account',
   UPLOAD_PRODUCT: 'UploadProduct',
+  STRIPE: 'Stripe',
 });
