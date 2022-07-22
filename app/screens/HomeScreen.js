@@ -34,7 +34,7 @@ function HomeScreen(props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // fetch();
+      fetch();
       turnToAuction();
     }, 6000);
     return () => clearInterval(interval);
@@ -120,6 +120,20 @@ function HomeScreen(props) {
       })
       .catch(error => alert('users: ', error));
   };
+
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
+
+  // const fetchUsers = async () => {
+  //   fetch('http://127.0.0.1:8080/get', {
+  //     method: 'GET',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }).then(res => console.log('res: ', res));
+  // };
 
   useEffect(() => {
     let reduxProducts = props.productsValue;
