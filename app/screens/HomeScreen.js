@@ -7,6 +7,7 @@ import {
 import moment from 'moment';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import axios from 'axios';
 
 import routes from '../navigation/routes';
 
@@ -32,20 +33,20 @@ function HomeScreen(props) {
   const [productsToBuy, setProductsToBuy] = useState([]);
   const [productsToBid, setProductsToBid] = useState([]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetch();
-      turnToAuction();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetch();
+  //     turnToAuction();
+  //   }, 6000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetch();
-    }, 12000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetch();
+  //   }, 12000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const fetch = async () => {
     let loggedInUserId = auth()._user.uid;
@@ -121,19 +122,17 @@ function HomeScreen(props) {
       .catch(error => alert('users: ', error));
   };
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-  // const fetchUsers = async () => {
-  //   fetch('http://127.0.0.1:8080/get', {
-  //     method: 'GET',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   }).then(res => console.log('res: ', res));
-  // };
+  const fetchUsers = async () => {
+    axios
+      .get('https://droppin-prices.herokuapp.com/read/all')
+      .then(function (response) {
+        console.log('response: ', response);
+      });
+  };
 
   useEffect(() => {
     let reduxProducts = props.productsValue;
