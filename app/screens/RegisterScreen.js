@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, KeyboardAvoidingView, Keyboard} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import axios from 'axios';
 
 import Button from '../components/Button';
@@ -73,26 +72,17 @@ function RegisterScreen(props) {
   };
 
   const createUser = res => {
-    let userObject = {
-      isAdmin: false,
-      displayName: null,
-      email: res.email,
-      location: null,
-      phoneNumber: null,
-      photoURL: null,
-      uid: res.uid,
-      analytics: [],
-    };
-
-    firestore()
-      .collection('users')
-      .doc(userObject.uid)
-      .set(userObject)
-      .then(() => {
-        console.log('User Created!');
+    axios
+      .post('https://droppin-prices.herokuapp.com/createUser', {
+        displayName: null,
+        email: res.email,
+        location: null,
+        phoneNumber: null,
+        photoURL: null,
+        uid: res.uid,
       })
-      .catch(err => {
-        alert(err);
+      .then(response => {
+        console.log('user created: ', response);
       });
   };
 
