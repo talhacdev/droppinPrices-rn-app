@@ -83,6 +83,8 @@ function RegisterScreen(props) {
       })
       .then(response => {
         console.log('user created: ', response);
+        alert('The user was created');
+        props.navigation.navigate(routes.LOGIN);
       });
   };
 
