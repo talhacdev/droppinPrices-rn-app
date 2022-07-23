@@ -1,29 +1,18 @@
-//App.js
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 import React, {useState, useEffect} from 'react';
+import {Text, View, StyleSheet} from 'react-native';
 import {
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  Button,
-  Text,
-  View,
-} from 'react-native';
-import stripe from 'tipsi-stripe';
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {CardField, useStripe} from '@stripe/stripe-react-native';
 
-const StripeScreen = () => {
-  const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState(null);
-  stripe.setOptions({
-    publishableKey:
-      'pk_test_51IjevCI8Q9YBwmn9SjPwKVo394wLHmSoLyoxGTHPkhhGWMPm8vFY6V8mzLzYr2gFjpczu9VaPHFWW3Oo3xukDTdx00EIzk6Tff',
-  });
+import Button from '../components/Button';
+
+import colors from '../config/colors';
+
+function StripeScreen(props) {
+  const {confirmPayment} = useStripe();
+  const [key, setKey] = useState();
 
   useEffect(() => {
     const data = JSON.stringify({items: [{id: 'xl-tshirt'}]});
@@ -31,82 +20,70 @@ const StripeScreen = () => {
       method: 'POST',
       body: data,
     };
-    fetch('http://localhost:8000/create-payment-intent', requestOptions)
-      .then(response => response.text())
-      .then(result => console.log('useEffect result: ', result))
+    fetch(
+      'https://droppin-prices.herokuapp.com/create-payment-intent',
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        setKey(result.clientSecret);
+      })
       .catch(error => console.log('useEffect error', error));
   }, []);
 
-  const confirmPaymentIntent = async () => {
-    const options = {};
-    // let client_secret =
-    //   'pi_3LOHMSI8Q9YBwmn91w4htWta_secret_3CVIXEqCe0zJZ3Txd1PTctQQm';
-    // let id = 'pi_3LOHMSI8Q9YBwmn91w4htWta';
-    try {
-      const result = await stripe.confirmPaymentIntent({
-        clientSecret: client_secret,
-        paymentMethodId: id,
-      });
-      console.log('Result', result);
-      if (result.status == 'succeeded') {
-        Alert.alert('Payment Sucessfull');
-      }
-    } catch (error) {
-      console.log('confirmPaymentIntent Error', error);
-    }
-  };
+  const handlePayment = async () => {
+    const {error} = await confirmPayment(key, {
+      paymentMethodType: 'Card',
+      billingDetails: {
+        email: 'JohnDoe@gmail.com',
+      },
+    });
 
-  const handleCardPayPress = async () => {
-    // const options = {}
-    try {
-      setLoading(true);
-      const token = await stripe.paymentRequestWithCardForm();
-      console.log('Token from Card ', token);
-      setToken(token);
-      setLoading(false);
-      confirmPaymentIntent();
-    } catch (error) {
-      console.log('handleCardPayPress Error ', error);
-      setLoading(false);
+    if (error) {
+      alert(error);
+    } else {
+      alert('Payment successful');
     }
   };
 
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.header}>Card Form Example</Text>
-        <Text style={styles.instruction}>
-          Click button to show Card Form dialog.
-        </Text>
-        <Button title="Enter you card and pay" onPress={handleCardPayPress} />
-        <View style={styles.token}>
-          {token && <Text style={styles.instruction}>Token: {token.id}</Text>}
-        </View>
-      </SafeAreaView>
-    </>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: wp(4),
+      }}>
+      <CardField
+        postalCodeEnabled={false}
+        placeholders={{
+          number: '4242 4242 4242 4242',
+        }}
+        cardStyle={{
+          backgroundColor: '#FFFFFF',
+          textColor: colors.search,
+        }}
+        style={{
+          width: '100%',
+          height: 50,
+          marginVertical: hp(4),
+        }}
+        onCardChange={cardDetails => {
+          console.log('cardDetails', cardDetails);
+        }}
+        onFocus={focusedField => {
+          console.log('focusField', focusedField);
+        }}
+      />
+      {key && (
+        <Button
+          backgroundColor={colors.secondary}
+          onPress={() => handlePayment()}
+          title={'Pay now'}
+        />
+      )}
+    </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instruction: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  token: {
-    height: 20,
-  },
-});
+}
 
 export default StripeScreen;

@@ -19,6 +19,7 @@
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
+    "@stripe/stripe-react-native": "^0.16.0",
     "moment": "^2.29.4",
     "react": "17.0.2",
     "react-native": "0.68.2",
@@ -35,8 +36,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
-    "rn-range-slider": "^2.1.1",
-    "tipsi-stripe": "^8.0.0-beta.10"
+    "rn-range-slider": "^2.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",

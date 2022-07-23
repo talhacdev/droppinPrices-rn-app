@@ -262,6 +262,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.material:material:<version>'
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])

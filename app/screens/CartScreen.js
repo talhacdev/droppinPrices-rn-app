@@ -34,6 +34,10 @@ function CartScreen(props) {
 
   let totalPrice = 0;
 
+  // useEffect(() => {
+  //   props.navigation.navigate(routes.STRIPE);
+  // });
+
   useEffect(() => {
     let reduxCart = props.cartValue;
 
