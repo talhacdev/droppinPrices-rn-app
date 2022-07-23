@@ -3,7 +3,6 @@ import {View, StyleSheet, KeyboardAvoidingView, Keyboard} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import axios from 'axios';
 
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
@@ -53,39 +52,32 @@ function RegisterScreen(props) {
 
   const onPressSignUp = () => {
     if (email || password || confirmPassword) {
-      if (password == confirmPassword) {
-        axios
-          .post('https://droppin-prices.herokuapp.com/signup', {
-            email,
-            password,
-          })
-          .then(function (response) {
-            if (!response?.data?.message) {
-              createUser(response.data);
-            } else {
-              alert(response.data.message);
-            }
-          });
-      } else {
-        alert('The passwords mismatch.');
-      }
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(res => {
+          console.log('User account created & signed in!: ');
+          createUser(res);
+        })
+        .catch(error => {
+          alert(error);
+        });
     }
   };
 
   const createUser = res => {
     let userObject = {
       isAdmin: false,
-      displayName: null,
-      email: res.email,
+      displayName: res.user.displayName,
+      email: res.user.email,
       location: null,
-      phoneNumber: null,
-      photoURL: null,
-      uid: res.uid,
+      phoneNumber: res.user.phoneNumber,
+      photoURL: res.user.photoURL,
+      uid: res.user.uid,
       analytics: [],
     };
 
     firestore()
-      .collection('users')
+      .collection('Users')
       .doc(userObject.uid)
       .set(userObject)
       .then(() => {
