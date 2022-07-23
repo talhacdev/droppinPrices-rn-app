@@ -10,7 +10,6 @@ import firestore from '@react-native-firebase/firestore';
 
 import routes from '../navigation/routes';
 
-import Header from '../components/Header';
 import ProductCardHeader from '../components/ProductCardHeader';
 import ProductCard from '../components/ProductCard';
 import Carousel from '../components/Carousel';

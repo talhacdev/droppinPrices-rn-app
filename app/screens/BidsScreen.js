@@ -12,8 +12,6 @@ import routes from '../navigation/routes';
 
 import Header from '../components/Header';
 import Slider from '../components/Slider';
-import Button from '../components/Button';
-import HeaderText from '../components/HeaderText';
 
 import colors from '../config/colors';
 

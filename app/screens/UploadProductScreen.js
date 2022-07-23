@@ -56,6 +56,7 @@ function UploadProductScreen(props) {
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
   const [quantity, setQuantity] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let reduxCategories = props.categoriesValue;
@@ -72,12 +73,13 @@ function UploadProductScreen(props) {
       // saveToPhotos: true,
     };
     launchImageLibrary(options, response => {
-      const source = response.assets[0].uri;
-
-      id == 0 && setImage(source.toString());
-      id == 1 && setImage1(source.toString());
-      id == 2 && setImage2(source.toString());
-      id == 3 && setImage3(source.toString());
+      if (!response.didCancel) {
+        const source = response.assets[0].uri;
+        id == 0 && setImage(source.toString());
+        id == 1 && setImage1(source.toString());
+        id == 2 && setImage2(source.toString());
+        id == 3 && setImage3(source.toString());
+      }
     });
   };
 
@@ -104,6 +106,7 @@ function UploadProductScreen(props) {
       .replace(/[^0-9]/g, '');
 
     try {
+      setLoading(true);
       await storage().ref(fileName).putFile(uploadUri);
       let url = await storage().ref(fileName).getDownloadURL();
       await storage().ref(fileName1).putFile(uploadUri1);
@@ -116,6 +119,7 @@ function UploadProductScreen(props) {
       let imageArray = [url, url1, url2, url3];
       createProduct(imageArray);
     } catch (e) {
+      setLoading(false);
       alert(e);
     }
   };
@@ -166,20 +170,24 @@ function UploadProductScreen(props) {
       liked: false,
       minimumPrice,
       originalPrice,
-      price,
+      price: originalPrice,
       productName,
-      timestamp: moment(new Date()),
+      // timestamp: moment().format('DD-MM-YYYY hh:mm:ss'),
+      timestamp: moment().toISOString(),
     };
 
     firestore()
       .collection('Products')
       .doc(productObject.id)
       .set(productObject)
-      .then(() => {
+      .then(res => {
+        console.log('res: ', res);
         alert('Product added!');
+        setLoading(false);
         props.navigation.navigate(routes.HOME);
       })
       .catch(err => {
+        setLoading(false);
         alert(err);
       });
   };
@@ -355,12 +363,12 @@ function UploadProductScreen(props) {
             keyboardType={'numeric'}
           />
 
-          <TextInput
+          {/* <TextInput
             onChangeText={text => setPrice(text)}
             defaultValue={price}
             placeholder={'Price'}
             keyboardType={'numeric'}
-          />
+          /> */}
           <TextInput
             onChangeText={text => setMinimumPrice(text)}
             defaultValue={minimumPrice}
@@ -376,18 +384,8 @@ function UploadProductScreen(props) {
 
           <View style={styles.buttonContainer}>
             <Button
-              disabled={
-                !image &&
-                !image1 &&
-                !image2 &&
-                !image3 &&
-                !productName &&
-                !description &&
-                !quantity &&
-                !price &&
-                !minimumPrice &&
-                !originalPrice
-              }
+              disabled={loading}
+              loading={loading}
               onPress={() => onPressUpload()}
               title={'Upload'}
             />

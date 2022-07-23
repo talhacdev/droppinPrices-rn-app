@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -24,14 +24,21 @@ function AppButton(props) {
           ? props.backgroundColor
           : colors.primary,
       }}>
-      <Text
-        style={{
-          fontSize: props.fontSize ? props.fontSize : wp(4),
-          fontFamily: fonts.RobotoBold,
-          color: colors.buttonText,
-        }}>
-        {props.title}
-      </Text>
+      {props.loading ? (
+        <ActivityIndicator
+          color={colors.secondary}
+          style={{marginVertical: hp(4)}}
+        />
+      ) : (
+        <Text
+          style={{
+            fontSize: props.fontSize ? props.fontSize : wp(4),
+            fontFamily: fonts.RobotoBold,
+            color: colors.buttonText,
+          }}>
+          {props.title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 }
